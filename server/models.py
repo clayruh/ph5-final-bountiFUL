@@ -3,7 +3,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from config import db
 
-
 # ================== USER ===================== #
 
 class User(db.Model, SerializerMixin):
@@ -11,16 +10,17 @@ class User(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
     username = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
     fname = db.Column(db.String, nullable=False)
     lname = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False) 
 
     pins = db.relationship('Pin', back_populates='user')
     plant = association_proxy('pins', 'plant')
-    serialize_rules = ('-pins.user')
+    serialize_rules = ('-pins.user',)
 
     def __repr__(self):
-        return f'User obj{self.id}: name:{self.fname} {self.lname}, username:{self.username}, address:{self.address}, pins:{self.pins}'
+        return f'User obj{self.id}: name:{self.fname} {self.lname}, username:{self.username}, password: {self.password}, address:{self.address}, pins:{self.pins}'
 
 # ================== PIN ===================== #
 
@@ -28,6 +28,7 @@ class Pin(db.Model, SerializerMixin):
     __tablename__ = 'pins'
     
     id = db.Column(db.Integer, primary_key=True, unique=True)
+    image = db.Column(db.String, unique=True)
     # check if geometry tracks coordinates
     location = db.Column(db.String, nullable=False) 
     comment = db.Column(db.String, nullable=False)
@@ -48,11 +49,10 @@ class Plant(db.Model, SerializerMixin):
     
     id = db.Column(db.Integer, primary_key=True, unique=True)
     plant_name = db.Column(db.String, nullable=False)
-    image = db.Column(db.String, unique=True)
 
     pins = db.relationship('Pin', back_populates='plant')
     user = association_proxy('pins', 'user')
-    serialize_rules = ('-pins.plant')
+    serialize_rules = ('-pins.plant',)
 
     def __repr__(self):
         return f'Plant obj{self.id}: plant_name:{self.plant_name}, img:{self.image}, pins:{self.pins}'

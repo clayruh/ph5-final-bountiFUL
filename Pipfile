@@ -13,6 +13,7 @@ flask-restful = "*"
 flask-cors = "*"
 faker = "*"
 sqlalchemy = "*"
+pillow = "*"
 
 [requires]
 python_full_version = "3.8.13"
