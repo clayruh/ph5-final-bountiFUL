@@ -1,15 +1,68 @@
 #!/usr/bin/env python3
 # Remote library imports
-from flask import request, jsonify
-from flask_restful import Resource
+from flask import request, jsonify, session
+from flask_bcrypt import Bcrypt
 
 # Local imports
 from config import app, db, api
 from models import User, Plant, Pin
 
-@app.route('/')
-def index():
-    return '<h1>WildHarvest Server</h1>'
+app.secret_key = b'u\xd2\xdc\xe82\xa3\xc0\xca\xe7H\xd03oi\xd1\x95\xcc\x7f'
+
+bcrypt = Bcrypt(app)
+
+# HELPER METHODS #
+def current_user():
+    return User.query.filter(User.id == session.get('user_id')).first()
+
+def check_admin():
+    return current_user() and current_user().admin
+
+# ============ USER SIGNUP ============ #
+
+@app.post('/users')
+def create_user():
+    try:
+        data = request.json
+
+        pw_hash = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+
+        new_user = User(username=data['username'], password_hash=pw_hash, fname=data['fname'], lname=data['lname'], address=data['address'])
+        db.session.add(new_user)
+        db.session.commit()
+
+        session['user_id'] = new_user.id
+
+        return jsonify(new_user.to_dict()), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 406
+    
+# ============ SESSION LOGIN/LOGOUT ============ #
+
+@app.post('/login')
+def login():
+    data = request.json
+    user = User.query.filter(User.username == data['username']).first()
+
+    if user and bcrypt.check_password_hash(user.password_hash, data['password']):
+        session['user_id'] = user.id
+        return jsonify(user.to_dict()), 202
+    else:
+        return jsonify({"message": "Invalid username or password"}), 401
+    
+@app.get('/check_session')
+def check_session()
+    user = current_user()
+    if user:
+        return jsonify( user.to_dict() ), 200
+    else: 
+        return {}, 401
+    
+@app.delete('/logout')
+def logout():
+    session['user_id'] = None
+    # session.pop('user_id')
+    return {}, 204
 
 # ============ USERS ============ #
 
@@ -23,13 +76,6 @@ def get_users_by_id(id):
     user=User.query.filter(User.id==id).first()
     return jsonify(user.to_dict(rules=('-pins',))), 200
 
-@app.post('/users')
-def create_user():
-    data = request.json
-    new_user = User(username=data['username'], password=data['password'], fname=data['fname'], lname=data['lname'], address=data['address'])
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify(new_user.to_dict()), 201
 
 @app.patch('/users/<int:id>')
 def edit_user(id):

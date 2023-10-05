@@ -9,8 +9,9 @@ class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    username = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False)
+    admin = db.Column(db.Boolean, default=False)
+    username = db.Column(db.String, unique=True, nullable=False)
+    password_hash = db.Column(db.String, nullable=False)
     fname = db.Column(db.String, nullable=False)
     lname = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False) 
@@ -20,7 +21,7 @@ class User(db.Model, SerializerMixin):
     serialize_rules = ('-pins.user',)
 
     def __repr__(self):
-        return f'User obj{self.id}: name:{self.fname} {self.lname}, username:{self.username}, password: {self.password}, address:{self.address}, pins:{self.pins}'
+        return f'User obj{self.id}: name:{self.fname} {self.lname}, username:{self.username}, password_hash: {self.password_hash}, address:{self.address}, pins:{self.pins}'
 
 # ================== PIN ===================== #
 

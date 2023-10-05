@@ -25,8 +25,9 @@ if __name__ == '__main__':
         users = []
         for _ in range(2):
             user = User(
+                admin=False,
                 username=faker.user_name(),
-                password=faker.password(),
+                password_hash=faker.password(),
                 fname=faker.first_name_nonbinary(),
                 lname=faker.last_name_nonbinary(),
                 address=faker.address()
