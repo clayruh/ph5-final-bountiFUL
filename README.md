@@ -1,6 +1,8 @@
 # Phase 5 Final Project: WildHarvest
 
-## Technology
+## About
+
+### Technology
 * JavaScript
 * React
 * Google Maps API
