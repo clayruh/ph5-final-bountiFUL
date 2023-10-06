@@ -51,7 +51,7 @@ def login():
         return jsonify({"message": "Invalid username or password"}), 401
     
 @app.get('/check_session')
-def check_session()
+def check_session():
     user = current_user()
     if user:
         return jsonify( user.to_dict() ), 200

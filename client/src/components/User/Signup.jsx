@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-export default function Signup() {
+export default function Signup( {attemptSignup} ) {
 
     // STATE //
     const [username, setUsername] = useState('')
@@ -21,13 +21,17 @@ export default function Signup() {
 
             <h2>Sign Up</h2>
 
-            <input type="text"
+            <label for="username">username</label>
+            <input id="username" 
+            type="text"
             onChange={handleChangeUsername}
             value={username}
             placeholder='username'
             />
 
-            <input type="text"
+            <label for="password">password</label>
+            <input id="password"
+            type="text"
             onChange={handleChangePassword}
             value={password}
             placeholder='password'

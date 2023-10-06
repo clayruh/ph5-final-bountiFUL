@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Login() {
+export default function Login({ attemptLogin }) {
 
     // STATE //
     const [username, setUsername] = useState('')
@@ -20,13 +20,17 @@ export default function Login() {
 
             <h2>Log In</h2>
 
-            <input type="text"
+            <label for="username">username</label>
+            <input id="username"
+            type="text"
             onChange={handleChangeUsername}
             value={username}
             placeholder='username'
             />
 
-            <input type="text"
+            <label for="password">password</label>
+            <input id="password"
+            type="text"
             onChange={handleChangePassword}
             value={password}
             placeholder='password'
