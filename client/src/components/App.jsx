@@ -6,7 +6,7 @@ const POST_HEADERS = {
   'Accepts': 'application/json'
 }
 
-const URL = "/"
+const URL = "/api/v1"
 
 export default function App() {
 
@@ -15,14 +15,21 @@ export default function App() {
 
   // USE EFFECT //
   useEffect( () => {
-    async function checkSession() {
-      const res = await fetch(URL + '/check_session')
+    // async function checkSession() {
+    //   const res = await fetch('/check_session')
+    //   if (res.ok) {
+    //     const data = await res.json()
+    //     setCurrentUser(data)
+    //   }
+    // }
+    // checkSession()
+    fetch(URL + '/check_session')
+    .then( res => {
       if (res.ok) {
-        const data = await res.json()
-        setCurrentUser(data)
+        res.json()
+        .then( data => setCurrentUser(data) )
       }
-    }
-    checkSession()
+    })
   }, [] )
 
   // SIGNUP, LOGIN, LOGOUT //
@@ -54,10 +61,10 @@ export default function App() {
       const data = await res.json()
       setCurrentUser(data)
     } else {
-      alert('Invalid log in')
+      alert('Incorrect username or password')
     }
   }
-
+  
   function logout() {
     setCurrentUser(null)
     fetch(URL + '/logout', {
@@ -65,7 +72,13 @@ export default function App() {
     })
   }
 
-
+  // PLANT ID API //
+  function identifyPlant() {
+    fetch('	https://plant.id/api/v3')
+    .then(res => res.json())
+    .then(data => console.log(data))
+  }
+  
   return (
 
     <div>
@@ -77,6 +90,12 @@ export default function App() {
       attemptSignup={attemptSignup}
       logout={logout}
       />
+
+      <br/>
+      <hr></hr>
+      <br/>
+      
+      <input type="file" accept="image/*" capture="camera"/>
       
     </div>
   )

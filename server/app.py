@@ -11,6 +11,8 @@ app.secret_key = b'u\xd2\xdc\xe82\xa3\xc0\xca\xe7H\xd03oi\xd1\x95\xcc\x7f'
 
 bcrypt = Bcrypt(app)
 
+URL = '/api/v1'
+
 # HELPER METHODS #
 def current_user():
     return User.query.filter(User.id == session.get('user_id')).first()
@@ -20,7 +22,7 @@ def check_admin():
 
 # ============ USER SIGNUP ============ #
 
-@app.post('/users')
+@app.post(URL + '/users')
 def create_user():
     try:
         data = request.json
@@ -39,7 +41,7 @@ def create_user():
     
 # ============ SESSION LOGIN/LOGOUT ============ #
 
-@app.post('/login')
+@app.post(URL + '/login')
 def login():
     data = request.json
     user = User.query.filter(User.username == data['username']).first()
@@ -50,7 +52,7 @@ def login():
     else:
         return jsonify({"message": "Invalid username or password"}), 401
     
-@app.get('/check_session')
+@app.get(URL + '/check_session')
 def check_session():
     user = current_user()
     if user:
@@ -58,7 +60,7 @@ def check_session():
     else: 
         return {}, 401
     
-@app.delete('/logout')
+@app.delete(URL + '/logout')
 def logout():
     session['user_id'] = None
     # session.pop('user_id')

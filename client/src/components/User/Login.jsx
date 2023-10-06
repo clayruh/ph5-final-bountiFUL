@@ -20,7 +20,7 @@ export default function Login({ attemptLogin }) {
 
             <h2>Log In</h2>
 
-            <label for="username">username</label>
+            <label htmlFor="username">username</label>
             <input id="username"
             type="text"
             onChange={handleChangeUsername}
@@ -28,7 +28,7 @@ export default function Login({ attemptLogin }) {
             placeholder='username'
             />
 
-            <label for="password">password</label>
+            <label htmlFor="password">password</label>
             <input id="password"
             type="text"
             onChange={handleChangePassword}
@@ -39,6 +39,8 @@ export default function Login({ attemptLogin }) {
             <input type="submit"
             value="Log in"
             />
+
+            <span>No account?<strong> Sign Up</strong></span>
 
         </form>
     )

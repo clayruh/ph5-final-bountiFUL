@@ -4,15 +4,18 @@
 from random import randint, choice as rc
 import random
 from faker import Faker
-
-faker = Faker()
+from flask_bcrypt import Bcrypt
 
 # Local imports
 from app import app
 from models import db, User, Plant, Pin
 
+faker = Faker()
+bcrypt = Bcrypt(app)
+
+app.secret_key = b'u\xd2\xdc\xe82\xa3\xc0\xca\xe7H\xd03oi\xd1\x95\xcc\x7f'
+
 if __name__ == '__main__':
-    fake = Faker()
     with app.app_context():
         print("Clearing db...")
         User.query.delete()
@@ -23,11 +26,12 @@ if __name__ == '__main__':
 
         print("Creating users...")
         users = []
+        pw_hash = bcrypt.generate_password_hash('password').decode('utf-8')
         for _ in range(2):
             user = User(
                 admin=False,
                 username=faker.user_name(),
-                password_hash=faker.password(),
+                password_hash=pw_hash,
                 fname=faker.first_name_nonbinary(),
                 lname=faker.last_name_nonbinary(),
                 address=faker.address()
