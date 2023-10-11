@@ -139,19 +139,21 @@ def delete_pin(id):
 @app.post(URL + '/process-image')
 def process_image():
     # try:
-    print("yeeeeeeee")
-    print(request)
     comment = request.form.get('comment')
-    image = request.form.get('upload-image')
-    print(f"form: {request.form.get('comment')}")
-    # form: ImmutableMultiDict([('comment', 'i am comment!!!!!!!!')])
+    file = request.form.get('upload-image')
     print(f"files: {request.files}")
-    # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>)])
-    encoded_image = [base64.b64encode(image.read()).decode("ascii")]
+    # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5014.jpg' ('image/jpeg')>)])
+    print(f"image: {request.files.get('upload-image')}")
+    # image: <FileStorage: 'IMG_5014.jpg' ('image/jpeg')>
+    print(f"comment: {request.files.get('comment')}")
+    print(request.headers)
+    # request is empty rn
+    # image = request.files['image']
+    images = [base64.b64encode(file.read()).decode("ascii")]
 
-    if encoded_image is not None:
+    if images is not None:
         print("\nwe're gonna get the result?\n")
-        result = send_to_plant_id(encoded_image)
+        result = send_to_plant_id(images)
         print("\nwe got the result\n")
         print(result)
         print("\n\n\n")
@@ -193,7 +195,7 @@ def process_image():
         if latitude or latitude == None: # aka charging bull lol
             latitude = 40.705600
             longitude = -74.013413
-        pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment="cool!", plant=plant, user=user)
+        pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
 
         db.session.add(pin)
         db.session.commit()
