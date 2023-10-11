@@ -55,7 +55,8 @@ if __name__ == '__main__':
         for _ in range(50):
             pin = Pin(
                 image=faker.url(),
-                location=faker.address(),
+                latitude=faker.latitude(),
+                longitude=faker.longitude(),
                 # eventually can swap for faker.paragraph() to work with a longer string of text
                 comment=faker.word(),
                 user=random.choice(users),

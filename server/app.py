@@ -12,6 +12,7 @@ import os
 
 PLANT_ID_API_KEY=os.environ.get('PLANT_ID_API_KEY')
 print(PLANT_ID_API_KEY)
+GOOGLEMAPS_API_KEY=os.environ.get('GOOGLEMAPS_API_KEY')
 
 app.secret_key = b'u\xd2\xdc\xe82\xa3\xc0\xca\xe7H\xd03oi\xd1\x95\xcc\x7f'
 
@@ -138,29 +139,70 @@ def delete_pin(id):
 @app.post(URL + '/process-image')
 def process_image():
     # try:
-    print(f'WE MADE ITTTTTT: {request.files}')
-    # request is empty rn
-    # image = request.files['image']
-    with open("IMG_5014.jpg", "rb") as file:
-        images = [base64.b64encode(file.read()).decode("ascii")]
+    print("yeeeeeeee")
+    print(request)
+    comment = request.form.get('comment')
+    image = request.form.get('upload-image')
+    print(f"form: {request.form.get('comment')}")
+    # form: ImmutableMultiDict([('comment', 'i am comment!!!!!!!!')])
+    print(f"files: {request.files}")
+    # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>)])
+    encoded_image = [base64.b64encode(image.read()).decode("ascii")]
 
-    if images is not None:
+    if encoded_image is not None:
         print("\nwe're gonna get the result?\n")
-        result = send_to_plant_id(images)
+        result = send_to_plant_id(encoded_image)
         print("\nwe got the result\n")
-        # print(result["suggestions"][0])
+        print(result)
         print("\n\n\n")
+        # iterate through the dictionary and return values
         for suggestion in result["suggestions"]:
-            print(f" >> {suggestion['plant_name']} -- {suggestion['probability']}%")
-            # print(suggestion["plant_name"])
-            # print(suggestion["probability"])
+            plant_name = suggestion['plant_name']
+            common_names = suggestion['plant_details']['common_names']
+            common_name = common_names[0] if common_names else "No common names available"
+            probability = suggestion['probability']
+
+            print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
+
+        # if plant already exists, use the existing plant
+        # omfg I can't believe I wrote this and it worked!!!
+        common_names = result["suggestions"][0]["plant_details"]["common_names"]
+        if common_names:
+            plant_name = common_names[0]
+        else:
+            plant_name = result["suggestions"][0]["plant_name"]
+        existing_plant = Plant.query.filter(Plant.plant_name==plant_name).first()
+        if existing_plant:
+            plant = existing_plant
+        else:
+            plant = Plant(plant_name=plant_name)
+            db.session.add(plant)
+            db.session.commit()
+
+        # need to assign a user that's logged in
+        # do I look at the user being returned in check_session?
+        user = User.query.filter(User.id==3).first()
+
+        # unsure how plant.id stores the image that's uploaded (will they delete it from their server eventually?)
+        # or should I host the ['images']['file_name'] myself on cloudinary
+
+        # need to have some sort of handling for if lat + long are null/None
+        latitude = result['meta_data']['latitude']
+        longitude = result['meta_data']['longitude']
+
+        if latitude or latitude == None: # aka charging bull lol
+            latitude = 40.705600
+            longitude = -74.013413
+        pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment="cool!", plant=plant, user=user)
+
+        db.session.add(pin)
+        db.session.commit()
     return {"images": images,
             "suggestions": result["suggestions"]}, 200
 
     # if image and allowed_file(image.filename):
     #     result = send_to_plant_id(image)
     #     return jsonify(result)
-
 
         # else:
         #     return jsonify({"error": "Invalid or unsupported image format"})
@@ -169,7 +211,6 @@ def process_image():
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'jpg', 'jpeg', 'png'}
-
 
 def send_to_plant_id(images):
     # response = requests.post('https://plant.id/api/v3/identification', files={'image': image})
@@ -189,28 +230,26 @@ def send_to_plant_id(images):
     return result
 
 # ============ PLANTS ============ #
-@app.get('/plants')
+@app.get(URL + '/plants')
 def get_plants():
     plants = Plant.query.all()
     return jsonify([plant.to_dict(rules=('-pins.user_id', '-pins.user.password', '-pins.user.username', '-pins.user.address')) for plant in plants]), 200
 
-@app.get('/plants/<int:id>')
+@app.get(URL + '/plants/<int:id>')
 def get_plants_by_id(id):
     plant = Plant.query.filter(Plant.id == id).first()
     return jsonify(plant.to_dict(rules=('-pins.user_id', '-pins.user.password', '-pins.user.username', '-pins.user.address'))), 200
 
-@app.patch('/plants/<int:id>')
+@app.patch(URL + '/plants/<int:id>')
 def edit_plant(id):
     pass
 
-@app.delete('/plants/<int:id>')
+@app.delete(URL + '/plants/<int:id>')
 def delete_plant(id):
     pass
 
 # ====================== GOOGLE MAPS API ====================== #
-@app.get(URL + '/api/maps/config')
-def get_maps_config():
-    return jsonify({'apiKey': googlemaps_api_key})
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

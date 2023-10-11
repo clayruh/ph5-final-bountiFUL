@@ -21,7 +21,7 @@ class User(db.Model, SerializerMixin):
     serialize_rules = ('-pins.user',)
 
     def __repr__(self):
-        return f'User obj{self.id}: name:{self.fname} {self.lname}, username:{self.username}, password_hash: {self.password_hash}, address:{self.address}, pins:{self.pins}'
+        return f'User obj {self.id}: name: {self.fname} {self.lname}, username: {self.username}, password_hash: {self.password_hash}, address: {self.address}, pins: {self.pins}'
 
 # ================== PIN ===================== #
 
@@ -30,8 +30,10 @@ class Pin(db.Model, SerializerMixin):
     
     id = db.Column(db.Integer, primary_key=True, unique=True)
     image = db.Column(db.String, unique=True)
-    # check if geometry tracks coordinates
-    location = db.Column(db.String, nullable=False) 
+    # is there something that could track location as an object of lat + long?
+    # location = db.Column(db.String, nullable=False) 
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
     comment = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     plant_id = db.Column(db.Integer, db.ForeignKey('plants.id'))
@@ -41,7 +43,7 @@ class Pin(db.Model, SerializerMixin):
     serialize_rules = ('-user.pins', '-plant.pins')
 
     def __repr__(self):
-        return f'Pin obj{self.id}: location:{self.location}, contributed by:{self.user_id}, for plant:{self.plant_id}'
+        return f'Pin obj {self.id}: latitude: {self.latitude}, longitude: {self.longitude}, contributed by: {self.user_id}, for plant: {self.plant_id}'
 
 # ================== PLANT ===================== #
 
@@ -56,4 +58,4 @@ class Plant(db.Model, SerializerMixin):
     serialize_rules = ('-pins.plant',)
 
     def __repr__(self):
-        return f'Plant obj{self.id}: plant_name:{self.plant_name}, img:{self.image}, pins:{self.pins}'
+        return f'Plant obj {self.id}: plant_name: {self.plant_name}, pins: {self.pins}'

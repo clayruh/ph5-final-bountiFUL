@@ -9,12 +9,11 @@ const POST_HEADERS = {
 
 const URL = "/api/v1"
 
-const plantIdKey = process.env.PLANT_API_KEY
-
 export default function App() {
 
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
+  const [plants, setPlants] = useState([])
 
   // USE EFFECT //
   useEffect( () => {
@@ -78,43 +77,28 @@ export default function App() {
   // PLANT ID API //
   function handleImageUpload(e) {
     e.preventDefault()
-    // console.log(e.target.files)
-    // alert(e.target.files)
-    // const imageFile = e.target
-    // const formData = new FormData(e.target)
-    // console.log(imageFile)
-    // const formData = new FormData(e.target)
-    // console.log("yeeeee", formData)
-    if (e.target) {
-      // const formData = new FormData()
-      // // alert(formData)
-      // formData.append('image', imageFile)
-      // alert(formData)
-      // console.log(formData)
-      // console.log("\nthis is my image: ")
-      // console.log(imageFile)
-      const formData = new FormData(e.target)
-      console.log(formData)
-      
-      // for(let [name, value] of formData) {
-      //   alert(`${name} = ${value}`); // key1 = value1, then key2 = value2
-      // }
 
-      const upload_image_to_database = async () => {
+    if (e.target) {
+      // somehow the FormData is able to take in the image and it's an array. Don't need to append???. Kash says maybe it's 'cause it's just one thing, so don't need key:value pairs
+
+      // so if I add in a comment area, then maybe need to be appending with key:value pairs
+      const formData = new FormData(e.target)
+      console.log(e.target)
+      console.log([...formData.entries()].forEach(i => console.log(i)))
+
+      async function upload_image_to_database () {
         await fetch("http://localhost:5555" + URL + '/process-image', {
           method: 'POST',
-          // possibly changing the format of body or headers
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            // 'Accepts': 'image/jpeg'
-          },
+          // DO NOT set headers for passing `multipart/form-data`.
+          // For some reason, passing non-JSON-serialized data 
+          // using fetch request to Flask backend breaks when 
+          // manually specifying headers for fetch. It shouldn't 
+          // do that, but it does. So we'll just leave it alone. 
           body: formData,
         })
         .then(res => {
           if (res.ok) {
             res.json().then(data => console.log(data))
-            console.log("ALLERRTTTTT:")
-            console.log(res.ok)
           } else {
             console.log(res)
             alert('Error processing image.')
@@ -147,13 +131,15 @@ export default function App() {
       <hr></hr>
       <br/>
 
-      <form encType="multipart/form-data" onSubmit={handleImageUpload}>
-      <input 
-        id="upload-image" 
-        type="file" 
-        accept="image/*" 
-        capture="camera"
-      />
+      <form onSubmit={handleImageUpload}>
+        <input type="text" name="comment"/>
+        <input 
+          id="upload-image" 
+          name="upload-image"
+          type="file" 
+          accept="image/*" 
+          capture="camera"
+        />
       <input type="submit" value="upload image"/>
       </form>
 

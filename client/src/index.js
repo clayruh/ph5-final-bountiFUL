@@ -1,8 +1,32 @@
 import React from "react";
-import App from "./components/App";
+import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);
+// COMPONENTS //
+import App from "./components/App";
+import UserPanel from "./components/User";
+
+// LOADERS //
+// import { getPlants } from './loaders'
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <App />,
+        children: [
+            {
+                index: true,
+                element: <UserPanel />,
+            },
+            // {
+            //     path: 'map',
+            //     element: <GoogleMaps />,
+            //     loader: getPlants
+            // }
+        ]
+    }
+])
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render( <RouterProvider router={router}/> )
