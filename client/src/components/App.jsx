@@ -140,7 +140,7 @@ export default function App() {
           accept="image/*" 
           capture="camera"
         />
-      <input type="submit" value="upload image"/>
+      <input type="submit" value="add a pin"/>
       </form>
 
       <GoogleMaps/>
