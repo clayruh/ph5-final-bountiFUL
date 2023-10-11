@@ -140,20 +140,20 @@ def delete_pin(id):
 def process_image():
     # try:
     comment = request.form.get('comment')
-    file = request.form.get('upload-image')
-    print(f"\n\n\n\n\n\nfiles: {request.files}")
-    # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5014.jpg' ('image/jpeg')>)])
+    image = request.form.get('upload-image')
+    print(f"files: {request.files}")
+    # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>)])
+    print(f"comment: {request.form.get('comment')}")
+    # form: ImmutableMultiDict([('comment', 'i am comment!!!!!!!!')])
     print(f"image: {request.files.get('upload-image')}")
-    # image: <FileStorage: 'IMG_5014.jpg' ('image/jpeg')>
-    print(f"comment: {request.files.get('comment')}\n\n\n\n\n")
-    # where is comment going?
-    print(request.headers)
+    # image: <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>
+    # print(request.headers)
+    with open("IMG_5056.jpg", "rb") as file:
+        images = [base64.b64encode(file.read()).decode("ascii")]
 
-    image = [base64.b64encode(file.read()).decode("ascii")]
-
-    if image is not None:
+    if images is not None:
         print("\nwe're gonna get the result?\n")
-        result = send_to_plant_id(image)
+        result = send_to_plant_id(images)
         print("\nwe got the result\n")
         print(result)
         print("\n\n\n")
@@ -199,7 +199,7 @@ def process_image():
 
         db.session.add(pin)
         db.session.commit()
-    return {"images": image,
+    return {"images": images,
             "suggestions": result["suggestions"]}, 200
 
     # if image and allowed_file(image.filename):
