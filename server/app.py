@@ -22,6 +22,7 @@ URL = '/api/v1'
 
 # HELPER METHODS #
 def current_user():
+    print(f"\nuser id: {session.get('user_id')}\n")
     return User.query.filter(User.id == session.get('user_id')).first()
 
 def check_admin():
@@ -50,6 +51,7 @@ def create_user():
 
 @app.post(URL + '/login')
 def login():
+    print(f"\n\ncurrent user: {current_user()}\n\n")
     data = request.json
     print(data)
     user = User.query.filter(User.username == data['username']).first()
@@ -103,10 +105,10 @@ def delete_user(id):
 
 # ============ PINS ============ #
 
-@app.get('/pins')
+@app.get(URL + '/pins')
 def get_pins():
     pins = Pin.query.all()
-    return jsonify([pin.to_dict(rules=('-user_id',)) for pin in pins]), 200
+    return jsonify([pin.to_dict(rules=('-user.id', '-user.address', '-user.admin', '-user.password_hash', 'user.fname', '-user.lname', '-user_id', '-plant_id')) for pin in pins]), 200
 
 @app.get('/pins/<int:id>')
 def get_pins_by_id(id):
@@ -140,7 +142,7 @@ def delete_pin(id):
 def process_image():
     # try:
     comment = request.form.get('comment')
-    image = request.form.get('upload-image')
+    image = request.files.get('upload-image')
     print(f"files: {request.files}")
     # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>)])
     print(f"comment: {request.form.get('comment')}")
@@ -148,12 +150,13 @@ def process_image():
     print(f"image: {request.files.get('upload-image')}")
     # image: <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>
     # print(request.headers)
-    with open("IMG_5056.jpg", "rb") as file:
-        images = [base64.b64encode(file.read()).decode("ascii")]
 
-    if images is not None:
+    # encode the image uploaded from the front-end
+    encoded_img = [base64.b64encode(image.read()).decode("ascii")]
+
+    if encoded_img is not None:
         print("\nwe're gonna get the result?\n")
-        result = send_to_plant_id(images)
+        result = send_to_plant_id(encoded_img)
         print("\nwe got the result\n")
         print(result)
         print("\n\n\n")
@@ -167,7 +170,6 @@ def process_image():
             print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
 
         # if plant already exists, use the existing plant
-        # omfg I can't believe I wrote this and it worked!!!
         common_names = result["suggestions"][0]["plant_details"]["common_names"]
         if common_names:
             plant_name = common_names[0]
@@ -181,14 +183,10 @@ def process_image():
             db.session.add(plant)
             db.session.commit()
 
-        # need to assign a user that's logged in
-        # do I look at the user being returned in check_session?
-        user = User.query.filter(User.id==3).first()
+        # assign the logged-in user
+        user = current_user()
 
-        # unsure how plant.id stores the image that's uploaded (will they delete it from their server eventually?)
-        # or should I host the ['images']['file_name'] myself on cloudinary
-
-        # need to have some sort of handling for if lat + long are null/None
+        # grab the coordinates from plant.id
         latitude = result['meta_data']['latitude']
         longitude = result['meta_data']['longitude']
 
@@ -199,8 +197,7 @@ def process_image():
 
         db.session.add(pin)
         db.session.commit()
-    return {"images": images,
-            "suggestions": result["suggestions"]}, 200
+    return jsonify(pin.to_dict()), 200
 
     # if image and allowed_file(image.filename):
     #     result = send_to_plant_id(image)
@@ -235,7 +232,7 @@ def send_to_plant_id(images):
 @app.get(URL + '/plants')
 def get_plants():
     plants = Plant.query.all()
-    return jsonify([plant.to_dict(rules=('-pins.user_id', '-pins.user.password', '-pins.user.username', '-pins.user.address')) for plant in plants]), 200
+    return jsonify([plant.to_dict(rules=('-pins.user_id', '-pins.user.admin', '-pins.user.password_hash', '-pins.user.username', '-pins.user.address')) for plant in plants]), 200
 
 @app.get(URL + '/plants/<int:id>')
 def get_plants_by_id(id):

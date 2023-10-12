@@ -6,9 +6,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 // COMPONENTS //
 import App from "./components/App";
 import UserPanel from "./components/User";
+import GoogleMaps from "./components/GoogleMaps"
 
 // LOADERS //
-// import { getPlants } from './loaders'
+import { getPins } from './loaders'
 
 const router = createBrowserRouter([
     {
@@ -19,11 +20,11 @@ const router = createBrowserRouter([
                 index: true,
                 element: <UserPanel />,
             },
-            // {
-            //     path: 'map',
-            //     element: <GoogleMaps />,
-            //     loader: getPlants
-            // }
+            {
+                path: 'map',
+                element: <GoogleMaps />,
+                loader: getPins
+            }
         ]
     }
 ])

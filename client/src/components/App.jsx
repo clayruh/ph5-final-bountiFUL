@@ -79,15 +79,12 @@ export default function App() {
     e.preventDefault()
 
     if (e.target) {
-      // somehow the FormData is able to take in the image and it's an array. Don't need to append???. Kash says maybe it's 'cause it's just one thing, so don't need key:value pairs
-
-      // so if I add in a comment area, then maybe need to be appending with key:value pairs
       const formData = new FormData(e.target)
       console.log(e.target)
       console.log([...formData.entries()].forEach(i => console.log(i)))
 
       async function upload_image_to_database () {
-        await fetch("http://localhost:5555" + URL + '/process-image', {
+        await fetch(URL + '/process-image', {
           method: 'POST',
           // DO NOT set headers for passing `multipart/form-data`.
           // For some reason, passing non-JSON-serialized data 
