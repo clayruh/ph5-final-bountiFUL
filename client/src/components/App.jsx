@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserPanel from './User'
 import GoogleMaps from "./GoogleMaps";
+import MapBox from "./MapBox";
 
 const POST_HEADERS = {
   'Content-Type': 'application/json',
@@ -140,7 +141,8 @@ export default function App() {
       <input type="submit" value="add a pin"/>
       </form>
 
-      <GoogleMaps/>
+      <MapBox />
+      {/* <GoogleMaps/> */}
       
     </div>
   )

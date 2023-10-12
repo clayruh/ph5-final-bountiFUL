@@ -5,3 +5,6 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+.map-container {
+  height: 600px;
+}

@@ -30,17 +30,6 @@ function GoogleMap(props) {
         </Marker>
     ) )
 
-    // const mapPins = pins.map( pinObj => (
-    //     <Marker
-    //         key={pinObj.id}
-    //         position={{
-    //             lat: {pinObj.latitude},
-    //             lng: {pinObj.longitude}
-    //         }}
-    //     >
-    //     </Marker>
-    // ) )
-
   return (
     <>
         <br></br>

@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from "./components/App";
 import UserPanel from "./components/User";
 import GoogleMaps from "./components/GoogleMaps"
+import MapBox from "./components/MapBox"
 
 // LOADERS //
 import { getPins } from './loaders'
@@ -22,8 +23,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'map',
-                element: <GoogleMaps />,
-                loader: getPins
+                element: <MapBox />,
             }
         ]
     }
