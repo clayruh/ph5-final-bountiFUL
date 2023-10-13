@@ -16,7 +16,7 @@ export default function App() {
 
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
-  // const [plants, setPlants] = useState([])
+  const [latlng, setLatLng] = useState(null)
 
   // USE EFFECT //
   useEffect( () => {
@@ -80,8 +80,10 @@ export default function App() {
   // GEOLOCATION //
   const successCallback = position => {
     console.log(position)
-    const long = position.coords.longitude
+    const lng = position.coords.longitude
     const lat = position.coords.latitude
+    const latlng = {lat,lng}
+    setLatLng(latlng)
   }
 
   const errorCallback = (error) => {
@@ -104,6 +106,11 @@ export default function App() {
       const formData = new FormData(e.target)
       console.log(e.target)
       console.log([...formData.entries()].forEach(i => console.log(i)))
+
+      if (latlng) {
+        formData.append("lat", latlng.lat)
+        formData.append("lng", latlng.lng)
+      }
 
       async function upload_image_to_database () {
         await fetch(URL + '/process-image', {
@@ -128,9 +135,7 @@ export default function App() {
           alert('An error occurred while processing the image')
         })
       }
-
       upload_image_to_database()
-      
     }
   }
   
@@ -167,7 +172,6 @@ export default function App() {
             type="checkbox" 
             id="current-position" 
             name="current-position" 
-            value="use my current location"
             onClick={getCurrentPosition} />
           <label htmlFor="current-position">use my current location</label>
         <br/>

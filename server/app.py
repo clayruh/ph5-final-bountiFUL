@@ -145,6 +145,10 @@ def process_image():
     # try:
     comment = request.form.get('comment')
     image = request.files.get('upload-image')
+    # since we append on the front-end with formData.append, we're looking for the key 'lat' 'lng'
+    lat = request.form['lat']
+    long = request.form['lng']
+    print(f"\n\n\nform data: {request.form}")
     print(f"files: {request.files}")
     # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>)])
     print(f"comment: {request.form.get('comment')}")
@@ -152,11 +156,9 @@ def process_image():
     print(f"image: {request.files.get('upload-image')}")
     # image: <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>
     # print(request.headers)
-    if image:
-        gps_info = get_gps_info(image)
-        lat = gps_info.get('GPSLatitude')
-        long = gps_info.get('GPSLongitude')
-    print(f"lat: {lat}, long: {long}")
+
+    if lat and long:
+        print(f"\n\n\n\ncomment: {comment}, lat: {lat}, long: {long}")
 
     return jsonify({"message": "success"}), 200
     # # encode the image uploaded from the front-end
