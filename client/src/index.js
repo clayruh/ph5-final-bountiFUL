@@ -6,11 +6,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 // COMPONENTS //
 import App from "./components/App";
 import UserPanel from "./components/User";
-import GoogleMaps from "./components/GoogleMaps"
 import MapBox from "./components/MapBox"
 
 // LOADERS //
-import { getPins } from './loaders'
+// import { getPins } from './loaders'
 
 const router = createBrowserRouter([
     {

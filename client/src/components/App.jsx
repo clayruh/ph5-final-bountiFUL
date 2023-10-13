@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+
+// COMPONENTS //
 import UserPanel from './User'
-import GoogleMaps from "./GoogleMaps";
 import MapBox from "./MapBox";
+
 
 const POST_HEADERS = {
   'Content-Type': 'application/json',
@@ -14,7 +16,7 @@ export default function App() {
 
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
-  const [plants, setPlants] = useState([])
+  // const [plants, setPlants] = useState([])
 
   // USE EFFECT //
   useEffect( () => {
@@ -75,7 +77,26 @@ export default function App() {
     })
   }
 
-  // PLANT ID API //
+  // GEOLOCATION //
+  const successCallback = position => {
+    console.log(position)
+    const long = position.coords.longitude
+    const lat = position.coords.latitude
+  }
+
+  const errorCallback = (error) => {
+    console.log(error)
+  }
+
+  function getCurrentPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
+    } else {
+      alert('Sorry your browser does not support geolocation, please add in an address')
+    }
+  }
+
+  // SEND PHOTO TO PLANT ID API //
   function handleImageUpload(e) {
     e.preventDefault()
 
@@ -130,19 +151,30 @@ export default function App() {
       <br/>
 
       <form onSubmit={handleImageUpload}>
-        <input type="text" name="comment"/>
-        <input 
-          id="upload-image" 
-          name="upload-image"
-          type="file" 
-          accept="image/*" 
-          capture="camera"
-        />
-      <input type="submit" value="add a pin"/>
+          <label htmlFor="comment">comment</label>
+          <input type="text" name="comment"/>
+        <br/>
+          <label htmlFor="upload-image">upload image</label>
+          <input 
+            id="upload-image" 
+            name="upload-image"
+            type="file" 
+            accept="image/*, .heic" 
+            capture="camera"
+          />
+        <br/>
+          <input 
+            type="checkbox" 
+            id="current-position" 
+            name="current-position" 
+            value="use my current location"
+            onClick={getCurrentPosition} />
+          <label htmlFor="current-position">use my current location</label>
+        <br/>
+          <input type="submit" value="add a pin"/>
       </form>
 
       <MapBox />
-      {/* <GoogleMaps/> */}
       
     </div>
   )

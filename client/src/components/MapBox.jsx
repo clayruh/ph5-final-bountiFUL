@@ -31,8 +31,9 @@ export default function MapBox() {
                     new mapboxgl.Marker()
                         .setLngLat([pinObj.longitude, pinObj.latitude])
                         .setPopup(new mapboxgl.Popup().setHTML(
-                            '<img src=' + pinObj.plant.image_url + ' />',
-                            '<p>' + pinObj.plant.plant_name + '</p>'
+                            // '<img src=' + pinObj.plant.image_url + ' />',
+                            '<p>' + pinObj.comment + '</p>',
+                            '<p>' + pinObj.plant.plant_name + '</p>',
                             ))
                         .addTo(map.current)
                 } )

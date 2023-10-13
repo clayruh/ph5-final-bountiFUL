@@ -4,6 +4,8 @@ from flask import Flask, request, jsonify, session
 from flask_bcrypt import Bcrypt
 import requests
 import base64
+from PIL import Image
+from PIL.ExifTags import TAGS, GPSTAGS
 
 # Local imports
 from config import app, db
@@ -150,54 +152,60 @@ def process_image():
     print(f"image: {request.files.get('upload-image')}")
     # image: <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>
     # print(request.headers)
+    if image:
+        gps_info = get_gps_info(image)
+        lat = gps_info.get('GPSLatitude')
+        long = gps_info.get('GPSLongitude')
+    print(f"lat: {lat}, long: {long}")
 
-    # encode the image uploaded from the front-end
-    encoded_img = [base64.b64encode(image.read()).decode("ascii")]
+    return jsonify({"message": "success"}), 200
+    # # encode the image uploaded from the front-end
+    # encoded_img = [base64.b64encode(image.read()).decode("ascii")]
 
-    if encoded_img is not None:
-        print("\nwe're gonna get the result?\n")
-        result = send_to_plant_id(encoded_img)
-        print("\nwe got the result\n")
-        print(result)
-        print("\n\n\n")
-        # iterate through the dictionary and return values
-        for suggestion in result["suggestions"]:
-            plant_name = suggestion['plant_name']
-            common_names = suggestion['plant_details']['common_names']
-            common_name = common_names[0] if common_names else "No common names available"
-            probability = suggestion['probability']
+    # if encoded_img is not None:
+    #     print("\nwe're gonna get the result?\n")
+    #     result = send_to_plant_id(encoded_img)
+    #     print("\nwe got the result\n")
+    #     print(result)
+    #     print("\n\n\n")
+    #     # iterate through the dictionary and return values
+    #     for suggestion in result["suggestions"]:
+    #         plant_name = suggestion['plant_name']
+    #         common_names = suggestion['plant_details']['common_names']
+    #         common_name = common_names[0] if common_names else "No common names available"
+    #         probability = suggestion['probability']
 
-            print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
+    #         print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
 
-        # if plant already exists, use the existing plant
-        common_names = result["suggestions"][0]["plant_details"]["common_names"]
-        if common_names:
-            plant_name = common_names[0]
-        else:
-            plant_name = result["suggestions"][0]["plant_name"]
-        existing_plant = Plant.query.filter(Plant.plant_name==plant_name).first()
-        if existing_plant:
-            plant = existing_plant
-        else:
-            plant = Plant(plant_name=plant_name)
-            db.session.add(plant)
-            db.session.commit()
+    #     # if plant already exists, use the existing plant
+    #     common_names = result["suggestions"][0]["plant_details"]["common_names"]
+    #     if common_names:
+    #         plant_name = common_names[0]
+    #     else:
+    #         plant_name = result["suggestions"][0]["plant_name"]
+    #     existing_plant = Plant.query.filter(Plant.plant_name==plant_name).first()
+    #     if existing_plant:
+    #         plant = existing_plant
+    #     else:
+    #         plant = Plant(plant_name=plant_name)
+    #         db.session.add(plant)
+    #         db.session.commit()
 
-        # assign the logged-in user
-        user = current_user()
+    #     # assign the logged-in user
+    #     user = current_user()
 
-        # grab the coordinates from plant.id
-        latitude = result['meta_data']['latitude']
-        longitude = result['meta_data']['longitude']
+    #     # grab the coordinates from plant.id
+    #     latitude = result['meta_data']['latitude']
+    #     longitude = result['meta_data']['longitude']
 
-        if latitude or latitude == None: # aka charging bull lol
-            latitude = 40.705600
-            longitude = -74.013413
-        pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
+    #     if latitude or latitude == None: # aka charging bull lol
+    #         latitude = 40.705600
+    #         longitude = -74.013413
+    #     pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
 
-        db.session.add(pin)
-        db.session.commit()
-    return jsonify(pin.to_dict()), 200
+    #     db.session.add(pin)
+    #     db.session.commit()
+    # return jsonify(pin.to_dict()), 200
 
     # if image and allowed_file(image.filename):
     #     result = send_to_plant_id(image)
@@ -211,12 +219,12 @@ def process_image():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'jpg', 'jpeg', 'png'}
 
-def send_to_plant_id(images):
+def send_to_plant_id(image):
     # response = requests.post('https://plant.id/api/v3/identification', files={'image': image})
     response = requests.post(
         "https://api.plant.id/v2/identify",
         json={
-            "images": images,
+            "images": image,
             # "modifiers": ["similar_images"],
             "plant_details": ["common_names", "url"]
         },
