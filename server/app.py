@@ -80,18 +80,18 @@ def logout():
 
 # ============ USERS ============ #
 
-@app.get('/users')
+@app.get(URL + '/users')
 def get_users():
     users=User.query.all()
     return jsonify([user.to_dict(rules=('-pins.plant_id', '-pins.user_id')) for user in users]), 200
 
-@app.get('/users/<int:id>')
+@app.get(URL + '/users/<int:id>')
 def get_users_by_id(id):
     user=User.query.filter(User.id==id).first()
     return jsonify(user.to_dict(rules=('-pins',))), 200
 
 
-@app.patch('/users/<int:id>')
+@app.patch(URL + '/users/<int:id>')
 def edit_user(id):
     data = request.json
     User.query.filter(User.id == id).update(data)
@@ -99,7 +99,7 @@ def edit_user(id):
     user = User.query.filter(User.id == id).first()
     return jsonify(user.to_dict()), 202
 
-@app.delete('/users/<int:id>')
+@app.delete(URL + '/users/<int:id>')
 def delete_user(id):
     user = User.query.filter(User.id == id).first()
     db.session.delete(user)
@@ -112,12 +112,12 @@ def get_pins():
     pins = Pin.query.all()
     return jsonify([pin.to_dict(rules=('-user.id', '-user.address', '-user.admin', '-user.password_hash', 'user.fname', '-user.lname', '-user_id', '-plant_id')) for pin in pins]), 200
 
-@app.get('/pins/<int:id>')
+@app.get(URL + '/pins/<int:id>')
 def get_pins_by_id(id):
     pin = Pin.query.filter(Pin.id == id).first()
     return jsonify(pin.to_dict(rules=('-user_id',))), 200
 
-@app.post('/pins')
+@app.post(URL + '/pins')
 def create_pin():
     data = request.json
     new_pin = Pin(image=data['image'], location=data['location'], comment=data['comment'])
@@ -126,7 +126,7 @@ def create_pin():
     db.session.commit()
     return jsonify(new_pin.to_dict()), 201
 
-@app.patch('/pins/<int:id>')
+@app.patch(URL + '/pins/<int:id>')
 def edit_pin(id):
     data = request.json
     Pin.query.filter(Pin.id == id).update(data)
@@ -134,7 +134,7 @@ def edit_pin(id):
     pin = Pin.query.filter(Pin.id == id).first()
     return jsonify(pin.to_dict()), 202
 
-@app.delete('/pins/<int:id>')
+@app.delete(URL + '/pins/<int:id>')
 def delete_pin(id):
     pass
 
@@ -146,8 +146,8 @@ def process_image():
     comment = request.form.get('comment')
     image = request.files.get('upload-image')
     # since we append on the front-end with formData.append, we're looking for the key 'lat' 'lng'
-    lat = request.form['lat']
-    long = request.form['lng']
+    latitude = request.form['lat']
+    longitude = request.form['lng']
     print(f"\n\n\nform data: {request.form}")
     print(f"files: {request.files}")
     # files: ImmutableMultiDict([('upload-image', <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>)])
@@ -156,58 +156,55 @@ def process_image():
     print(f"image: {request.files.get('upload-image')}")
     # image: <FileStorage: 'IMG_5056.jpg' ('image/jpeg')>
     # print(request.headers)
+    print(f"\n\nlat: {latitude}, long: {longitude}")
+    # lat: 40.7053516, long: -74.0140096
 
-    if lat and long:
-        print(f"\n\n\n\ncomment: {comment}, lat: {lat}, long: {long}")
+    # encode the image uploaded from the front-end
+    encoded_img = [base64.b64encode(image.read()).decode("ascii")]
 
-    return jsonify({"message": "success"}), 200
-    # # encode the image uploaded from the front-end
-    # encoded_img = [base64.b64encode(image.read()).decode("ascii")]
+    if encoded_img is not None:
+        print("\nwe're gonna get the result?\n")
+        result = send_to_plant_id(encoded_img)
+        print("\nwe got the result\n")
+        print(result)
+        print("\n\n\n")
+        # iterate through the dictionary and return values
+        for suggestion in result["suggestions"]:
+            plant_name = suggestion['plant_name']
+            common_names = suggestion['plant_details']['common_names']
+            common_name = common_names[0] if common_names else "No common names available"
+            probability = suggestion['probability']
 
-    # if encoded_img is not None:
-    #     print("\nwe're gonna get the result?\n")
-    #     result = send_to_plant_id(encoded_img)
-    #     print("\nwe got the result\n")
-    #     print(result)
-    #     print("\n\n\n")
-    #     # iterate through the dictionary and return values
-    #     for suggestion in result["suggestions"]:
-    #         plant_name = suggestion['plant_name']
-    #         common_names = suggestion['plant_details']['common_names']
-    #         common_name = common_names[0] if common_names else "No common names available"
-    #         probability = suggestion['probability']
+            print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
 
-    #         print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
+        # if plant already exists, use the existing plant
+        common_names = result["suggestions"][0]["plant_details"]["common_names"]
+        if common_names:
+            plant_name = common_names[0]
+        else:
+            plant_name = result["suggestions"][0]["plant_name"]
+        existing_plant = Plant.query.filter(Plant.plant_name==plant_name).first()
+        if existing_plant:
+            plant = existing_plant
+        else:
+            plant = Plant(plant_name=plant_name)
+            db.session.add(plant)
+            db.session.commit()
 
-    #     # if plant already exists, use the existing plant
-    #     common_names = result["suggestions"][0]["plant_details"]["common_names"]
-    #     if common_names:
-    #         plant_name = common_names[0]
-    #     else:
-    #         plant_name = result["suggestions"][0]["plant_name"]
-    #     existing_plant = Plant.query.filter(Plant.plant_name==plant_name).first()
-    #     if existing_plant:
-    #         plant = existing_plant
-    #     else:
-    #         plant = Plant(plant_name=plant_name)
-    #         db.session.add(plant)
-    #         db.session.commit()
+        # assign the logged-in user
+        user = current_user()
 
-    #     # assign the logged-in user
-    #     user = current_user()
+        if latitude or latitude == None: # aka my apt lol
+            latitude = 40.742006
+            longitude = -73.924876
 
-    #     # grab the coordinates from plant.id
-    #     latitude = result['meta_data']['latitude']
-    #     longitude = result['meta_data']['longitude']
+        # for the pin, image needs to process the url string from "https://plant.id/media/imgs/4bf8cd9d17e6461194e99df8b81865c5.jpg" to "https://storage.googleapis.com/mlapi_images/plant.id/production/4bf8cd9d17e6461194e99df8b81865c5.jpg"
+        # something like strip the "https://plant.id/media/imgs/" from the front, then when added to db, add "https://storage.googleapis.com/mlapi_images/plant.id/production/"
+        pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
 
-    #     if latitude or latitude == None: # aka charging bull lol
-    #         latitude = 40.705600
-    #         longitude = -74.013413
-    #     pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
-
-    #     db.session.add(pin)
-    #     db.session.commit()
-    # return jsonify(pin.to_dict()), 200
+        db.session.add(pin)
+        db.session.commit()
+    return jsonify(pin.to_dict()), 200
 
     # if image and allowed_file(image.filename):
     #     result = send_to_plant_id(image)
@@ -247,7 +244,7 @@ def get_plants():
 @app.get(URL + '/plants/<int:id>')
 def get_plants_by_id(id):
     plant = Plant.query.filter(Plant.id == id).first()
-    return jsonify(plant.to_dict(rules=('-pins.user_id', '-pins.user.password', '-pins.user.username', '-pins.user.address'))), 200
+    return jsonify(plant.to_dict(rules=('-pins.user_id', '-pins.user.admin', '-pins.user.password_hash', '-pins.user.username', '-pins.user.address'))), 200
 
 @app.patch(URL + '/plants/<int:id>')
 def edit_plant(id):

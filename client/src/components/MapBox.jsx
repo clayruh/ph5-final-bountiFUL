@@ -31,20 +31,25 @@ export default function MapBox() {
                     new mapboxgl.Marker()
                         .setLngLat([pinObj.longitude, pinObj.latitude])
                         .setPopup(new mapboxgl.Popup().setHTML(
-                            // '<img src=' + pinObj.plant.image_url + ' />',
-                            '<p>' + pinObj.comment + '</p>',
-                            '<p>' + pinObj.plant.plant_name + '</p>',
+                            `
+                            <img src="${pinObj.plant.image_url}"/>
+                            <h3>${pinObj.plant.plant_name}</h3>
+                            <p>${pinObj.comment}</p>
+                            <p> - ${pinObj.user.username}</p>
+                            `
                             ))
                         .addTo(map.current)
                 } )
             } )
         }, [])
     
-    const mapPins = pins.map( pinObj => (
+    const mapPins = pins.map( pinObj => 
+        (
         <div key={pinObj.id}>
             <h4>{pinObj.plant.plant_name}</h4>
             <p>{pinObj.longitude}</p>
             <p>{pinObj.latitude}</p>
+            <p>{pinObj.user.username}</p>
         </div>
         ) )
 

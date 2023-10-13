@@ -87,7 +87,7 @@ export default function App() {
   }
 
   const errorCallback = (error) => {
-    console.log(error)
+    alert('Unable to retrieve your location. Either turn on location services or add in an address')
   }
 
   function getCurrentPosition() {
@@ -156,9 +156,6 @@ export default function App() {
       <br/>
 
       <form onSubmit={handleImageUpload}>
-          <label htmlFor="comment">comment</label>
-          <input type="text" name="comment"/>
-        <br/>
           <label htmlFor="upload-image">upload image</label>
           <input 
             id="upload-image" 
@@ -174,6 +171,12 @@ export default function App() {
             name="current-position" 
             onClick={getCurrentPosition} />
           <label htmlFor="current-position">use my current location</label>
+        <br/>
+          <label htmlFor="address">address</label>
+          <input id="address" name="address" type="text"/>
+        <br/>
+          <label htmlFor="comment">comment</label>
+          <input type="text" name="comment"/>
         <br/>
           <input type="submit" value="add a pin"/>
       </form>
