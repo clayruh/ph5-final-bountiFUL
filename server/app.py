@@ -112,9 +112,10 @@ def get_pins():
     pins = Pin.query.all()
     return jsonify([pin.to_dict(rules=('-user.id', '-user.address', '-user.admin', '-user.password_hash', 'user.fname', '-user.lname', '-user_id', '-plant_id')) for pin in pins]), 200
 
+# is this right? current_user()? or session.get('user_id')
 @app.get(URL + '/pins/<int:id>')
-def get_pins_by_id(id):
-    pin = Pin.query.filter(Pin.id == id).first()
+def get_pins_by_user_id(id):
+    pin = Pin.query.filter(Pin.user_id == current_user()).first()
     return jsonify(pin.to_dict(rules=('-user_id',))), 200
 
 @app.post(URL + '/pins')
@@ -136,7 +137,13 @@ def edit_pin(id):
 
 @app.delete(URL + '/pins/<int:id>')
 def delete_pin(id):
-    pass
+    pin = Pin.query.filter(Pin.id == id).first()
+    if pin:
+        db.session.delete(pin)
+        db.session.commit()
+        return jsonify({}), 200
+    else:
+        return jsonify({"error": "Pin not found"}), 404
 
 # ============= PLANT ID API ============== #
 
@@ -198,9 +205,12 @@ def process_image():
             latitude = 40.742006
             longitude = -73.924876
 
-        # for the pin, image needs to process the url string from "https://plant.id/media/imgs/4bf8cd9d17e6461194e99df8b81865c5.jpg" to "https://storage.googleapis.com/mlapi_images/plant.id/production/4bf8cd9d17e6461194e99df8b81865c5.jpg"
-        # something like strip the "https://plant.id/media/imgs/" from the front, then when added to db, add "https://storage.googleapis.com/mlapi_images/plant.id/production/"
-        pin = Pin(image=result['images'][0]['url'], latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
+        # update image url to the one from plant.id (where they store it)
+        img_from_plant_id = result['images'][0]['url']        
+        if img_from_plant_id.startswith("https://plant.id/media/imgs/"):
+            img = "https://storage.googleapis.com/mlapi_images/plant.id/production/" + img_from_plant_id[len("https://plant.id/media/imgs/"):]
+
+        pin = Pin(image=img, latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
 
         db.session.add(pin)
         db.session.commit()
