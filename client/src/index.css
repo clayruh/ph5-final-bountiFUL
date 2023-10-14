@@ -17,7 +17,7 @@
 }
 
 /* MAPBOX POPUP POSITION */
-.mapboxgl-popup-anchor-top,
+/* .mapboxgl-popup-anchor-top,
 .mapboxgl-popup-anchor-top-left,
 .mapboxgl-popup-anchor-top-right {
   max-width: 300px;
@@ -35,7 +35,7 @@
 .mapboxgl-popup-anchor-right {
   max-width: 300px;
   transform: translate(-55%, -5px) translate(445px, 260px) !important;
-}
+} */
 /* END MAPBOX POPUP POSITION */
 
 
