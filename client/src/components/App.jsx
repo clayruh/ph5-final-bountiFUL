@@ -17,6 +17,9 @@ export default function App() {
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
   const [latlng, setLatLng] = useState(null)
+  const [address, setAddress] = useState('')
+  const [minCharTyped, setMinCharTyped] = useState(false)
+  const [suggestions, setSuggestions] = useState([])
 
   // USE EFFECT //
   useEffect( () => {
@@ -77,7 +80,7 @@ export default function App() {
     })
   }
 
-  // GEOLOCATION //
+  // USER'S CURRENT GEOLOCATION //
   const successCallback = position => {
     console.log(position)
     const lng = position.coords.longitude
@@ -96,6 +99,36 @@ export default function App() {
     } else {
       alert('Sorry your browser does not support geolocation, please add in an address')
     }
+  }
+
+  // HANDLE ADDRESS INPUT //
+  useEffect( () => {
+    if (minCharTyped) {
+      const geocode = async () => {
+        const limit = 5
+        const autocomplete = true
+        const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?proximity=ip&access_token=${process.env.REACT_APP_MAPBOX_API_KEY}&limit=${limit}&autocomplete=${autocomplete}`
+
+        try {
+          const response = await fetch(endpoint)
+          if (response.ok) {
+            const data = await response.json()
+            const locations = data.features.map( (feature) => ({
+              name: feature.place_name
+            }) )
+            setSuggestions(locations)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      geocode()
+    }
+  }, [address, minCharTyped] )
+
+  function handleSuggestionClick(selectedLocation) {
+    setAddress(selectedLocation.name)
+    setSuggestions([])
   }
 
   // SEND PHOTO TO PLANT ID API //
@@ -173,8 +206,25 @@ export default function App() {
           <label htmlFor="current-position">use my current location</label>
         <br/>
           <label htmlFor="address">address</label>
-          <input id="address" name="address" type="text"/>
+          <input 
+            id="address" 
+            name="address" 
+            type="text"
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value)
+              setMinCharTyped(e.target.value.length >= 4)}}/>
         <br/>
+          <ul>
+            {suggestions.map( (location, index) => (
+              <li key={index} onClick={ () => { 
+                setAddress(location.name)
+                setSuggestions([])
+              }}>
+                {location.name}
+              </li>
+            ) )}
+          </ul>
           <label htmlFor="comment">comment</label>
           <input type="text" name="comment"/>
         <br/>
