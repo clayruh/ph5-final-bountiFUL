@@ -15,6 +15,7 @@ export default function App() {
 
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
+  const [pins, setPins] = useState([])
   const [latlng, setLatLng] = useState(null)
   const [optIn, setOptIn] = useState(false)
   const [address, setAddress] = useState('')
@@ -157,6 +158,10 @@ export default function App() {
         formData.append("lng", selectedSuggestion.longitude)
       }
 
+      function addPin(newPin) {
+        setPins(prevPins => [...prevPins, newPin])
+      }
+
       async function upload_image_to_database () {
         await fetch(URL + '/process-image', {
           method: 'POST',
@@ -169,7 +174,8 @@ export default function App() {
         })
         .then(res => {
           if (res.ok) {
-            res.json().then(data => console.log(data))
+            res.json().then(newPin => addPin(newPin))
+            //  this is where I want to update pin state and add the new one 
           } else {
             console.log(res)
             alert('Error processing image.')
@@ -243,7 +249,7 @@ export default function App() {
           <input type="submit" value="add a pin"/>
       </form>
 
-      <MapBox />
+      <MapBox pins={pins} setPins={setPins}/>
       
     </div>
   )

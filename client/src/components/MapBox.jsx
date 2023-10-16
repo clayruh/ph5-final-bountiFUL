@@ -4,10 +4,9 @@ import mapboxgl from 'mapbox-gl';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API_KEY;
 
-export default function MapBox() {
+export default function MapBox({pins, setPins}) {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [pins, setPins] = useState([]);
   const [selectedPin, setSelectedPin] = useState(null);
 
   // HANDLE BOOKMARKS //
@@ -16,6 +15,7 @@ export default function MapBox() {
   }
 
   // Fetch pin data and initialize the map
+  // maybe don't use useEffect so that the map updates when a new pin is added?
   useEffect(() => {
     fetch('http://localhost:5555/api/v1/pins')
       .then((res) => res.json())

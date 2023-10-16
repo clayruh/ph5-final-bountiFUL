@@ -13,8 +13,6 @@ from models import User, Plant, Pin
 import os
 
 PLANT_ID_API_KEY=os.environ.get('PLANT_ID_API_KEY')
-print(PLANT_ID_API_KEY)
-GOOGLEMAPS_API_KEY=os.environ.get('GOOGLEMAPS_API_KEY')
 
 app.secret_key = b'u\xd2\xdc\xe82\xa3\xc0\xca\xe7H\xd03oi\xd1\x95\xcc\x7f'
 
@@ -167,7 +165,6 @@ def process_image():
     # lat: 40.7053516, long: -74.0140096
 
     # encode the image uploaded from the front-end
-
     encoded_img = [base64.b64encode(image.read()).decode("ascii")]
 
     if encoded_img is not None:
@@ -240,7 +237,7 @@ def send_to_plant_id(image):
         },
         headers={
             "Content-Type": "application/json",
-            "Api-Key": "ABVydjecE9RcYXn35O3fp6RRLBXmEi0Cmkd0Fup3Ia5F9dcFMT"
+            "Api-Key": PLANT_ID_API_KEY
         }
     )
     result = response.json()
