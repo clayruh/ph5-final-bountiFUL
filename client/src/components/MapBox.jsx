@@ -4,6 +4,8 @@ import mapboxgl from 'mapbox-gl';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API_KEY;
 
+const URL = "/api/v1"
+
 export default function MapBox({pins, setPins}) {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -15,9 +17,9 @@ export default function MapBox({pins, setPins}) {
   }
 
   // Fetch pin data and initialize the map
-  // maybe don't use useEffect so that the map updates when a new pin is added?
+  // have to add in dependency for pins or setPins
   useEffect(() => {
-    fetch('http://localhost:5555/api/v1/pins')
+    fetch( URL + '/pins')
       .then((res) => res.json())
       .then((allData) => {
         setPins(allData);
@@ -44,7 +46,7 @@ export default function MapBox({pins, setPins}) {
                   <div className="mapbox-popup-text">
                     <h3>${pinObj.plant.plant_name}</h3>
                     <p>${pinObj.comment}</p>
-                    <p> - ${pinObj.user.username}</p>
+                    <p> - ${pinObj.user?.username}</p>
                   </div>
                   <div className="bookmark-button">
                     <button onChange=${handleBookmark}>bookmark</button>
@@ -61,7 +63,7 @@ export default function MapBox({pins, setPins}) {
           });
         });
       });
-  }, []);
+  }, [setPins]);
 
   // Zoom to the selected pin
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function MapBox({pins, setPins}) {
       <h4>{pinObj.plant.plant_name}</h4>
       <p>{pinObj.longitude}</p>
       <p>{pinObj.latitude}</p>
-      <p>{pinObj.user.username}</p>
+      {/* <p>{pinObj.user.username}</p> */}
     </div>
   ));
 

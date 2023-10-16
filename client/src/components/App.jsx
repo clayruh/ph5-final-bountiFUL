@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 // COMPONENTS //
 import UserPanel from './User'
+import AddPinForm from './AddPinForm'
 import MapBox from "./MapBox";
 
 const POST_HEADERS = {
@@ -16,11 +17,9 @@ export default function App() {
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
   const [pins, setPins] = useState([])
+  
   const [latlng, setLatLng] = useState(null)
   const [optIn, setOptIn] = useState(false)
-  const [address, setAddress] = useState('')
-  const [minCharTyped, setMinCharTyped] = useState(false)
-  const [suggestions, setSuggestions] = useState([])
   const [selectedSuggestion, setSelectedSuggestion] = useState(null)
 
   // USE EFFECT //
@@ -106,40 +105,6 @@ export default function App() {
     }
   }
 
-  // HANDLE ADDRESS INPUT //
-  useEffect( () => {
-    if (minCharTyped) {
-      const geocode = async () => {
-        const limit = 5
-        const autocomplete = true
-        const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?proximity=ip&access_token=${process.env.REACT_APP_MAPBOX_API_KEY}&limit=${limit}&autocomplete=${autocomplete}`
-
-        try {
-          const response = await fetch(endpoint)
-          if (response.ok) {
-            const data = await response.json()
-            const locations = data.features.map( (feature) => ({
-              name: feature.place_name,
-              longitude: feature.center[0],
-              latitude: feature.center[1]
-            }) )
-            setSuggestions(locations)
-          }
-        } catch (error) {
-          console.log(error)
-        }
-      }
-      geocode()
-    }
-  }, [address, minCharTyped] )
-
-  function handleSuggestionClick(selectedLocation) {
-    setSelectedSuggestion(selectedLocation)
-    console.log("latitude", selectedLocation.latitude)
-    console.log("longitude", selectedLocation.longitude)
-    setAddress(selectedLocation.name)
-    setSuggestions([])
-  }
 
   // SEND PHOTO TO PLANT ID API //
   function handleImageUpload(e) {
@@ -149,44 +114,48 @@ export default function App() {
       const formData = new FormData(e.target)
       console.log(e.target)
       console.log([...formData.entries()].forEach(i => console.log(i)))
-
-      if (optIn === true) {
-        formData.append("lat", latlng.lat)
-        formData.append("lng", latlng.lng)
-      } else if (optIn === false) {
-        formData.append("lat", selectedSuggestion.latitude)
-        formData.append("lng", selectedSuggestion.longitude)
+      if (currentUser !== null) {
+        if (optIn === true) {
+          formData.append("lat", latlng.lat)
+          formData.append("lng", latlng.lng)
+        } else if (optIn === false) {
+          formData.append("lat", selectedSuggestion.latitude)
+          formData.append("lng", selectedSuggestion.longitude)
+        }
+  
+        function addPin(newPin) {
+          setPins(prevPins => [...prevPins, newPin])
+        }
+  
+        async function upload_image_to_database () {
+          await fetch(URL + '/process-image', {
+            method: 'POST',
+            // DO NOT set headers for passing `multipart/form-data`.
+            // For some reason, passing non-JSON-serialized data 
+            // using fetch request to Flask backend breaks when 
+            // manually specifying headers for fetch. It shouldn't 
+            // do that, but it does. So we'll just leave it alone. 
+            body: formData,
+          })
+          .then(res => {
+            if (res.ok) {
+              res.json().then(newPin => addPin(newPin))
+              //  this is where I want to update pin state and add the new one 
+            } else {
+              console.log(res)
+              alert('Error processing image.')
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error)
+            alert('An error occurred while processing the image')
+          })
+        }
+        upload_image_to_database()
+      } else {
+        alert("Please log in or sign up to add a pin")
       }
 
-      function addPin(newPin) {
-        setPins(prevPins => [...prevPins, newPin])
-      }
-
-      async function upload_image_to_database () {
-        await fetch(URL + '/process-image', {
-          method: 'POST',
-          // DO NOT set headers for passing `multipart/form-data`.
-          // For some reason, passing non-JSON-serialized data 
-          // using fetch request to Flask backend breaks when 
-          // manually specifying headers for fetch. It shouldn't 
-          // do that, but it does. So we'll just leave it alone. 
-          body: formData,
-        })
-        .then(res => {
-          if (res.ok) {
-            res.json().then(newPin => addPin(newPin))
-            //  this is where I want to update pin state and add the new one 
-          } else {
-            console.log(res)
-            alert('Error processing image.')
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error)
-          alert('An error occurred while processing the image')
-        })
-      }
-      upload_image_to_database()
     }
   }
   
@@ -206,48 +175,12 @@ export default function App() {
       <hr></hr>
       <br/>
 
-      <form onSubmit={handleImageUpload}>
-          <label htmlFor="upload-image">upload image</label>
-          <input 
-            id="upload-image" 
-            name="upload-image"
-            type="file" 
-            accept="image/*, .heic" 
-            capture="camera"
-          />
-        <br/>
-          <input 
-            type="checkbox" 
-            id="current-position" 
-            name="current-position" 
-            checked={optIn}
-            onChange={getCurrentPosition} />
-          <label htmlFor="current-position">use my current location</label>
-        <br/>
-          <label htmlFor="address">address</label>
-          <input 
-            id="address" 
-            name="address" 
-            type="text"
-            value={address}
-            onChange={(e) => {
-              setAddress(e.target.value)
-              setMinCharTyped(e.target.value.length >= 4)}}
-              disabled={optIn}
-              />
-        <br/>
-          <ul>
-            {suggestions.map( (location, index) => (
-              <li key={index} onClick={() => handleSuggestionClick(location)}>
-                {location.name}
-              </li>
-            ) )}
-          </ul>
-          <label htmlFor="comment">comment</label>
-          <input type="text" name="comment"/>
-        <br/>
-          <input type="submit" value="add a pin"/>
-      </form>
+      <AddPinForm
+        handleImageUpload={handleImageUpload}
+        optIn={optIn}
+        getCurrentPosition={getCurrentPosition}
+        setSelectedSuggestion={setSelectedSuggestion}
+      />
 
       <MapBox pins={pins} setPins={setPins}/>
       
