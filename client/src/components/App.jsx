@@ -100,6 +100,7 @@ export default function App() {
     if (navigator.geolocation) {
       setOptIn(true)
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
+      // should I put something here like the address bar then should be disabled?
     } else {
       setOptIn(false)
       alert('Sorry your browser does not support geolocation, please add in an address')
@@ -160,6 +161,7 @@ export default function App() {
       if (optIn == true) {
         formData.append("lat", latlng.lat)
         formData.append("lng", latlng.lng)
+        // somewhere here, want to say if the user opts in for c
       } else if (optIn == false) {
         formData.append("lat", selectedSuggestion.latitude)
         formData.append("lng", selectedSuggestion.longitude)

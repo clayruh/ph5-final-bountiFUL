@@ -168,55 +168,54 @@ def process_image():
 
     # encode the image uploaded from the front-end
 
-    return jsonify({}), 200
-    # encoded_img = [base64.b64encode(image.read()).decode("ascii")]
+    encoded_img = [base64.b64encode(image.read()).decode("ascii")]
 
-    # if encoded_img is not None:
-    #     print("\nwe're gonna get the result?\n")
-    #     result = send_to_plant_id(encoded_img)
-    #     print("\nwe got the result\n")
-    #     print(result)
-    #     print("\n\n\n")
-    #     # iterate through the dictionary and return values
-    #     for suggestion in result["suggestions"]:
-    #         plant_name = suggestion['plant_name']
-    #         common_names = suggestion['plant_details']['common_names']
-    #         common_name = common_names[0] if common_names else "No common names available"
-    #         probability = suggestion['probability']
+    if encoded_img is not None:
+        print("\nwe're gonna get the result?\n")
+        result = send_to_plant_id(encoded_img)
+        print("\nwe got the result\n")
+        print(result)
+        print("\n\n\n")
+        # iterate through the dictionary and return values
+        for suggestion in result["suggestions"]:
+            plant_name = suggestion['plant_name']
+            common_names = suggestion['plant_details']['common_names']
+            common_name = common_names[0] if common_names else "No common names available"
+            probability = suggestion['probability']
 
-    #         print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
+            print(f" >> {plant_name} AKA: {common_name} -- {probability}%")
 
-    #     # if plant already exists, use the existing plant
-    #     common_names = result["suggestions"][0]["plant_details"]["common_names"]
-    #     if common_names:
-    #         plant_name = common_names[0]
-    #     else:
-    #         plant_name = result["suggestions"][0]["plant_name"]
-    #     existing_plant = Plant.query.filter(Plant.plant_name==plant_name).first()
-    #     if existing_plant:
-    #         plant = existing_plant
-    #     else:
-    #         plant = Plant(plant_name=plant_name)
-    #         db.session.add(plant)
-    #         db.session.commit()
+        # if plant already exists, use the existing plant
+        common_names = result["suggestions"][0]["plant_details"]["common_names"]
+        if common_names:
+            plant_name = common_names[0]
+        else:
+            plant_name = result["suggestions"][0]["plant_name"]
+        existing_plant = Plant.query.filter(Plant.plant_name==plant_name).first()
+        if existing_plant:
+            plant = existing_plant
+        else:
+            plant = Plant(plant_name=plant_name)
+            db.session.add(plant)
+            db.session.commit()
 
-    #     # assign the logged-in user
-    #     user = current_user()
+        # assign the logged-in user
+        user = current_user()
 
-    #     # if latitude or latitude == None: # aka my apt lol
-    #     #     latitude = 40.742006
-    #     #     longitude = -73.924876
+        # if latitude or latitude == None: # aka my apt lol
+        #     latitude = 40.742006
+        #     longitude = -73.924876
 
-    #     # update image url to the one from plant.id (where they store it)
-    #     img_from_plant_id = result['images'][0]['url']        
-    #     if img_from_plant_id.startswith("https://plant.id/media/imgs/"):
-    #         img = "https://storage.googleapis.com/mlapi_images/plant.id/production/" + img_from_plant_id[len("https://plant.id/media/imgs/"):]
+        # update image url to the one from plant.id (where they store it)
+        img_from_plant_id = result['images'][0]['url']        
+        if img_from_plant_id.startswith("https://plant.id/media/imgs/"):
+            img = "https://storage.googleapis.com/mlapi_images/plant.id/production/" + img_from_plant_id[len("https://plant.id/media/imgs/"):]
 
-    #     pin = Pin(image=img, latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
+        pin = Pin(image=img, latitude=latitude, longitude=longitude, comment=comment, plant=plant, user=user)
 
-    #     db.session.add(pin)
-    #     db.session.commit()
-    # return jsonify(pin.to_dict()), 200
+        db.session.add(pin)
+        db.session.commit()
+    return jsonify(pin.to_dict()), 200
 
     # if image and allowed_file(image.filename):
     #     result = send_to_plant_id(image)
