@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login({ attemptLogin }) {
 
@@ -40,7 +41,7 @@ export default function Login({ attemptLogin }) {
             value="Log in"
             />
 
-            <span>No account?<strong> Sign Up</strong></span>
+            <span>No account? <a href="/signup">Sign Up</a></span>
 
         </form>
     )

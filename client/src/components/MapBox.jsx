@@ -63,7 +63,7 @@ export default function MapBox({pins, setPins}) {
           });
         });
       });
-  }, [setPins]);
+  }, []);
 
   // Zoom to the selected pin
   useEffect(() => {

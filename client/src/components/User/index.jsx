@@ -8,14 +8,14 @@ export default function UserPanel({ currentUser, attemptLogin, attemptSignup, lo
         return (
             <div className="flex-row">
                 <Signup attemptSignup={attemptSignup} />
-    
-                <Login attemptLogin={attemptLogin} />
             </div>
         )
     } else {
+        <Login attemptLogin={attemptLogin} />
+    } if (currentUser) {
         return (
             <>
-            <h2>Welcome {currentUser.fname} {currentUser.lname}</h2>
+            <h2>Hi {currentUser.fname} {currentUser.lname}</h2>
             <button onClick={logout}>Logout</button>
             </>
         )

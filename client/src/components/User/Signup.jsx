@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 export default function Signup( {attemptSignup} ) {
 
@@ -71,7 +71,7 @@ export default function Signup( {attemptSignup} ) {
             value="Sign Up"
             />
 
-            <span>Already have an account?<strong> Login</strong></span>
+            <span>Already have an account? <a href="/login"> Login</a></span>
 
         </form>
     )

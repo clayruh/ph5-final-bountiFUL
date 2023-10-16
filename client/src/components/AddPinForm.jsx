@@ -41,7 +41,6 @@ export default function AddPinForm({ handleImageUpload, optIn, getCurrentPositio
         setSuggestions([])
       }
 
-
     return (
         <form onSubmit={handleImageUpload}>
           <label htmlFor="upload-image">upload image</label>

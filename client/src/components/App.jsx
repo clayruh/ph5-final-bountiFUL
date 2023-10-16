@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Outlet } from 'react-router-dom'
 
 // COMPONENTS //
+import Header from './Header'
 import UserPanel from './User'
 import AddPinForm from './AddPinForm'
 import MapBox from "./MapBox";
@@ -17,7 +19,7 @@ export default function App() {
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
   const [pins, setPins] = useState([])
-  
+
   const [latlng, setLatLng] = useState(null)
   const [optIn, setOptIn] = useState(false)
   const [selectedSuggestion, setSelectedSuggestion] = useState(null)
@@ -162,14 +164,15 @@ export default function App() {
   return (
 
     <div>
-      <h1>Wild Harvest</h1>
+      <Header/>
+      <Outlet/>
 
-      <UserPanel
+      {/* <UserPanel
         currentUser={currentUser}
         attemptLogin={attemptLogin}
         attemptSignup={attemptSignup}
         logout={logout}
-      />
+      /> */}
 
       <br/>
       <hr></hr>
