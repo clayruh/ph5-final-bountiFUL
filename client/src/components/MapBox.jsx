@@ -68,7 +68,7 @@ export default function MapBox() {
 
   const mapPins = pins.map((pinObj) => (
     <div key={pinObj.id}>
-      <img src={pinObj.image} style={{ width: 50 + 'px' }} />
+      <img src={pinObj.image} style={{ width: 50 + 'px' }} alt={pinObj.plant.plant_name}/>
       <h4>{pinObj.plant.plant_name}</h4>
       <p>{pinObj.longitude}</p>
       <p>{pinObj.latitude}</p>

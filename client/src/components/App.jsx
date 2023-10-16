@@ -17,9 +17,11 @@ export default function App() {
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
   const [latlng, setLatLng] = useState(null)
+  const [optIn, setOptIn] = useState(false)
   const [address, setAddress] = useState('')
   const [minCharTyped, setMinCharTyped] = useState(false)
   const [suggestions, setSuggestions] = useState([])
+  const [selectedSuggestion, setSelectedSuggestion] = useState(null)
 
   // USE EFFECT //
   useEffect( () => {
@@ -90,13 +92,16 @@ export default function App() {
   }
 
   const errorCallback = (error) => {
+    setOptIn(false)
     alert('Unable to retrieve your location. Either turn on location services or add in an address')
   }
 
   function getCurrentPosition() {
     if (navigator.geolocation) {
+      setOptIn(true)
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
     } else {
+      setOptIn(false)
       alert('Sorry your browser does not support geolocation, please add in an address')
     }
   }
@@ -114,8 +119,17 @@ export default function App() {
           if (response.ok) {
             const data = await response.json()
             const locations = data.features.map( (feature) => ({
-              name: feature.place_name
+              name: feature.place_name,
+              longitude: feature.center[0],
+              latitude: feature.center[1]
             }) )
+
+            // soooo when the option is clicked on, that's the long + lat I want
+            // locations.forEach(location => {
+            //   console.log("name", location.name)
+            //   console.log("longitude", location.longitude)
+            //   console.log("latitude", location.latitude)
+            // })
             setSuggestions(locations)
           }
         } catch (error) {
@@ -127,6 +141,9 @@ export default function App() {
   }, [address, minCharTyped] )
 
   function handleSuggestionClick(selectedLocation) {
+    setSelectedSuggestion(selectedLocation)
+    console.log("latitude", selectedLocation.latitude)
+    console.log("longitude", selectedLocation.longitude)
     setAddress(selectedLocation.name)
     setSuggestions([])
   }
@@ -140,9 +157,13 @@ export default function App() {
       console.log(e.target)
       console.log([...formData.entries()].forEach(i => console.log(i)))
 
-      if (latlng) {
+      if (optIn == true) {
         formData.append("lat", latlng.lat)
         formData.append("lng", latlng.lng)
+      } else if (optIn == false) {
+        formData.append("lat", selectedSuggestion.latitude)
+        formData.append("lng", selectedSuggestion.longitude)
+        console.log(selectedSuggestion.latitude, selectedSuggestion.longitude)
       }
 
       async function upload_image_to_database () {
@@ -202,6 +223,7 @@ export default function App() {
             type="checkbox" 
             id="current-position" 
             name="current-position" 
+            checked={optIn}
             onClick={getCurrentPosition} />
           <label htmlFor="current-position">use my current location</label>
         <br/>
@@ -217,10 +239,7 @@ export default function App() {
         <br/>
           <ul>
             {suggestions.map( (location, index) => (
-              <li key={index} onClick={ () => { 
-                setAddress(location.name)
-                setSuggestions([])
-              }}>
+              <li key={index} onClick={() => handleSuggestionClick(location)}>
                 {location.name}
               </li>
             ) )}
