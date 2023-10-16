@@ -237,7 +237,9 @@ export default function App() {
             value={address}
             onChange={(e) => {
               setAddress(e.target.value)
-              setMinCharTyped(e.target.value.length >= 4)}}/>
+              setMinCharTyped(e.target.value.length >= 4)}}
+              disabled={optIn}
+              />
         <br/>
           <ul>
             {suggestions.map( (location, index) => (
