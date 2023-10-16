@@ -1,10 +1,95 @@
 import {useEffect, useState} from 'react'
+import {useOutletContext, useNavigate} from 'react-router-dom'
 
-export default function AddPinForm({ handleImageUpload, optIn, getCurrentPosition, setSelectedSuggestion}) {
+const URL = "/api/v1"
+
+export default function AddPinForm() {
+
+
+    const navigate = useNavigate()
+
+    const [currentUser] = useOutletContext()
 
     const [address, setAddress] = useState('')
     const [minCharTyped, setMinCharTyped] = useState(false)
     const [suggestions, setSuggestions] = useState([])
+    
+    const [latlng, setLatLng] = useState(null)
+    const [optIn, setOptIn] = useState(false)
+    const [selectedSuggestion, setSelectedSuggestion] = useState(null)
+    
+    // USER'S CURRENT GEOLOCATION //
+    const successCallback = position => {
+        console.log(position)
+        const lng = position.coords.longitude
+        const lat = position.coords.latitude
+        const latlng = {lat,lng}
+        setLatLng(latlng)
+    }
+
+    const errorCallback = (error) => {
+        setOptIn(false)
+        alert('Unable to retrieve your location. Either turn on location services or add in an address')
+    }
+
+    function getCurrentPosition() {
+        if (navigator.geolocation) {
+        setOptIn(true)
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
+        } else {
+        setOptIn(false)
+        alert('Sorry your browser does not support geolocation, please add in an address')
+        }
+    }
+
+    // SEND PHOTO TO PLANT ID API //
+    function handleImageUpload(e) {
+        e.preventDefault()
+
+        if (e.target) {
+        const formData = new FormData(e.target)
+        console.log(e.target)
+        console.log([...formData.entries()].forEach(i => console.log(i)))
+        if (currentUser !== null) {
+            if (optIn === true) {
+            formData.append("lat", latlng.lat)
+            formData.append("lng", latlng.lng)
+            } else if (optIn === false) {
+            formData.append("lat", selectedSuggestion.latitude)
+            formData.append("lng", selectedSuggestion.longitude)
+            }
+    
+            async function upload_image_to_database () {
+            await fetch(URL + '/process-image', {
+                method: 'POST',
+                // DO NOT set headers for passing `multipart/form-data`.
+                // For some reason, passing non-JSON-serialized data 
+                // using fetch request to Flask backend breaks when 
+                // manually specifying headers for fetch. It shouldn't 
+                // do that, but it does. So we'll just leave it alone. 
+                body: formData,
+            })
+            .then(res => {
+                if (res.ok) {
+                res.json().then(newPin => navigate('/map'))
+                //  this is where I want to update pin state and add the new one 
+                } else {
+                console.log(res)
+                alert('Error processing image.')
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                alert('An error occurred while processing the image')
+            })
+            }
+            upload_image_to_database()
+        } else {
+            alert("Please log in or sign up to add a pin")
+        }
+
+        }
+    }
 
     // HANDLE ADDRESS INPUT //
     useEffect( () => {

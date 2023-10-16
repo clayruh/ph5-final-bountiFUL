@@ -5,8 +5,6 @@ import { useOutletContext } from 'react-router-dom'
 export default function UserPanel() {
 
     const [currentUser, attemptLogin, attemptSignup, logout] = useOutletContext()
-    console.log(currentUser, attemptLogin, attemptSignup, logout)
-    console.log("is this working?")
 
     // change to show the <Signup/> first and if they have an account, show <Login/>
     if (!currentUser) {

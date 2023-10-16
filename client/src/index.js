@@ -21,10 +21,10 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <UserPanel />,
+                element: <MapBox />,
             },
             {
-                path: '/sign-in',
+                path: '/account',
                 element: <UserPanel />,
             },
             {
