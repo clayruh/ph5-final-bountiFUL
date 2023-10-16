@@ -6,10 +6,11 @@ mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API_KEY;
 
 const URL = "/api/v1"
 
-export default function MapBox({pins, setPins}) {
+export default function MapBox() {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [selectedPin, setSelectedPin] = useState(null);
+  const [pins, setPins] = useState([])
 
   // HANDLE BOOKMARKS //
   function handleBookmark() {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 // COMPONENTS //
 import Header from './Header'
@@ -16,9 +16,11 @@ const URL = "/api/v1"
 
 export default function App() {
 
+  const navigate = useNavigate()
+
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
-  const [pins, setPins] = useState([])
+  
 
   const [latlng, setLatLng] = useState(null)
   const [optIn, setOptIn] = useState(false)
@@ -71,6 +73,7 @@ export default function App() {
     if (res.ok) {
       const data = await res.json()
       setCurrentUser(data)
+      navigate('/map')
     } else {
       alert('Incorrect username or password')
     }
@@ -125,10 +128,6 @@ export default function App() {
           formData.append("lng", selectedSuggestion.longitude)
         }
   
-        function addPin(newPin) {
-          setPins(prevPins => [...prevPins, newPin])
-        }
-  
         async function upload_image_to_database () {
           await fetch(URL + '/process-image', {
             method: 'POST',
@@ -141,7 +140,7 @@ export default function App() {
           })
           .then(res => {
             if (res.ok) {
-              res.json().then(newPin => addPin(newPin))
+              res.json().then(newPin => navigate('/map'))
               //  this is where I want to update pin state and add the new one 
             } else {
               console.log(res)
@@ -165,7 +164,7 @@ export default function App() {
 
     <div>
       <Header/>
-      <Outlet/>
+      <Outlet context={ [currentUser, attemptLogin, attemptSignup, logout] }/>
 
       {/* <UserPanel
         currentUser={currentUser}
@@ -178,14 +177,14 @@ export default function App() {
       <hr></hr>
       <br/>
 
-      <AddPinForm
+      {/* <AddPinForm
         handleImageUpload={handleImageUpload}
         optIn={optIn}
         getCurrentPosition={getCurrentPosition}
         setSelectedSuggestion={setSelectedSuggestion}
       />
 
-      <MapBox pins={pins} setPins={setPins}/>
+      <MapBox /> */}
       
     </div>
   )

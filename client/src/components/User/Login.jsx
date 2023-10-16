@@ -1,7 +1,12 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useOutletContext, useNavigate } from 'react-router-dom'
+import "./userForm.css"
 
-export default function Login({ attemptLogin }) {
+
+export default function Login() {
+
+    const [currentUser, attemptLogin, attemptSignup, logout] = useOutletContext()
+    console.log(currentUser)
 
     // STATE //
     const [username, setUsername] = useState('')
@@ -17,32 +22,33 @@ export default function Login({ attemptLogin }) {
     }
     
     return (
-        <form className='user-form' onSubmit={handleSubmit}>
+        <div className='form-container'>
 
-            <h2>Log In</h2>
+            <form className='user-form' onSubmit={handleSubmit}>
 
-            <label htmlFor="username">username</label>
-            <input id="username"
-            type="text"
-            onChange={handleChangeUsername}
-            value={username}
-            placeholder='username'
-            />
+                <h2>Log In</h2>
 
-            <label htmlFor="password">password</label>
-            <input id="password"
-            type="text"
-            onChange={handleChangePassword}
-            value={password}
-            placeholder='password'
-            />
+                <input id="username"
+                type="text"
+                onChange={handleChangeUsername}
+                value={username}
+                placeholder='username'
+                />
 
-            <input type="submit"
-            value="Log in"
-            />
+                <input id="password"
+                type="text"
+                onChange={handleChangePassword}
+                value={password}
+                placeholder='password'
+                />
 
-            <span>No account? <a href="/signup">Sign Up</a></span>
+                <input type="submit"
+                value="Log in"
+                />
 
-        </form>
+                <span>No account? <a href="/signup">Sign Up</a></span>
+
+            </form>
+        </div>
     )
 }

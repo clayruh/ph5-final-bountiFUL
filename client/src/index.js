@@ -36,11 +36,11 @@ const router = createBrowserRouter([
                 element: <Signup />
             },
             {
-                path: 'map',
+                path: '/map',
                 element: <MapBox />,
             },
             {
-                path: 'add-a-pin',
+                path: '/add-a-pin',
                 element: <AddPinForm />
             }
         ]

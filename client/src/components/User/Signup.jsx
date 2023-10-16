@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
-export default function Signup( {attemptSignup} ) {
+export default function Signup() {
+
+    const [currentUser, attemptLogin, attemptSignup, logout] = useOutletContext()
 
     // STATE //
     const [fname, setFName] = useState('')
@@ -27,7 +30,6 @@ export default function Signup( {attemptSignup} ) {
 
             <h2>Sign Up</h2>
 
-            <label htmlFor="fname">first name</label>
             <input id="fname" 
             type="text"
             onChange={handleChangeFName}
@@ -35,7 +37,6 @@ export default function Signup( {attemptSignup} ) {
             placeholder='First Name'
             />
 
-            <label htmlFor="lname">last name</label>
             <input id="lname" 
             type="text"
             onChange={handleChangeLName}
@@ -43,7 +44,6 @@ export default function Signup( {attemptSignup} ) {
             placeholder='Last Name'
             />
 
-            <label htmlFor="address">address</label>
             <input id="address" 
             type="text"
             onChange={handleChangeAddress}
@@ -51,7 +51,6 @@ export default function Signup( {attemptSignup} ) {
             placeholder='address'
             />
 
-            <label htmlFor="username">username</label>
             <input id="username" 
             type="text"
             onChange={handleChangeUsername}
@@ -59,7 +58,6 @@ export default function Signup( {attemptSignup} ) {
             placeholder='username'
             />
 
-            <label htmlFor="password">password</label>
             <input id="password"
             type="text"
             onChange={handleChangePassword}
