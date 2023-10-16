@@ -10,6 +10,11 @@ export default function MapBox() {
   const [pins, setPins] = useState([]);
   const [selectedPin, setSelectedPin] = useState(null);
 
+  // HANDLE BOOKMARKS //
+  function handleBookmark() {
+    console.log("bookmarked!")
+  }
+
   // Fetch pin data and initialize the map
   useEffect(() => {
     fetch('http://localhost:5555/api/v1/pins')
@@ -41,6 +46,9 @@ export default function MapBox() {
                     <p>${pinObj.comment}</p>
                     <p> - ${pinObj.user.username}</p>
                   </div>
+                  <div className="bookmark-button">
+                    <button onChange=${handleBookmark}>bookmark</button>
+                  </div>
                 </div>
                 `
               )
@@ -66,6 +74,7 @@ export default function MapBox() {
     }
   }, [selectedPin]);
 
+  // just mapping to the page to see details
   const mapPins = pins.map((pinObj) => (
     <div key={pinObj.id}>
       <img src={pinObj.image} style={{ width: 50 + 'px' }} alt={pinObj.plant.plant_name}/>

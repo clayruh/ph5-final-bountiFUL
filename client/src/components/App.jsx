@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import UserPanel from './User'
 import MapBox from "./MapBox";
 
-
 const POST_HEADERS = {
   'Content-Type': 'application/json',
   'Accepts': 'application/json'
@@ -100,7 +99,6 @@ export default function App() {
     if (navigator.geolocation) {
       setOptIn(true)
       navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
-      // should I put something here like the address bar then should be disabled?
     } else {
       setOptIn(false)
       alert('Sorry your browser does not support geolocation, please add in an address')
@@ -124,13 +122,6 @@ export default function App() {
               longitude: feature.center[0],
               latitude: feature.center[1]
             }) )
-
-            // soooo when the option is clicked on, that's the long + lat I want
-            // locations.forEach(location => {
-            //   console.log("name", location.name)
-            //   console.log("longitude", location.longitude)
-            //   console.log("latitude", location.latitude)
-            // })
             setSuggestions(locations)
           }
         } catch (error) {
@@ -158,14 +149,12 @@ export default function App() {
       console.log(e.target)
       console.log([...formData.entries()].forEach(i => console.log(i)))
 
-      if (optIn == true) {
+      if (optIn === true) {
         formData.append("lat", latlng.lat)
         formData.append("lng", latlng.lng)
-        // somewhere here, want to say if the user opts in for c
-      } else if (optIn == false) {
+      } else if (optIn === false) {
         formData.append("lat", selectedSuggestion.latitude)
         formData.append("lng", selectedSuggestion.longitude)
-        console.log(selectedSuggestion.latitude, selectedSuggestion.longitude)
       }
 
       async function upload_image_to_database () {
@@ -226,7 +215,7 @@ export default function App() {
             id="current-position" 
             name="current-position" 
             checked={optIn}
-            onClick={getCurrentPosition} />
+            onChange={getCurrentPosition} />
           <label htmlFor="current-position">use my current location</label>
         <br/>
           <label htmlFor="address">address</label>
