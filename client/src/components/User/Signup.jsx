@@ -3,7 +3,7 @@ import { useOutletContext } from 'react-router-dom'
 
 export default function Signup() {
 
-    const [attemptSignup] = useOutletContext()
+    const {attemptSignup} = useOutletContext()
 
     // STATE //
     const [fname, setFName] = useState('')

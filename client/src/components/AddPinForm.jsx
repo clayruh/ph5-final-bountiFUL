@@ -7,7 +7,7 @@ export default function AddPinForm() {
 
     const navigate = useNavigate()
 
-    const [currentUser] = useOutletContext()
+    const {currentUser} = useOutletContext()
 
     const [address, setAddress] = useState('')
     const [minCharTyped, setMinCharTyped] = useState(false)

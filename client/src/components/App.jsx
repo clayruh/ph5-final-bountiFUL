@@ -82,7 +82,7 @@ export default function App() {
 
     <div>
       <Header/>
-      <Outlet context={ [currentUser, attemptLogin, attemptSignup, logout] }/>
+      <Outlet context={ {currentUser, attemptLogin, attemptSignup, logout} }/>
 
       {/* <UserPanel
         currentUser={currentUser}

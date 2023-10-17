@@ -6,12 +6,12 @@
 import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 
-const URL = "http://localhost:5555/api/v1"
+const URL = "/api/v1"
 
 export default function UserPins() {
 
     const [pins, setPins] = useState([])
-    const [currentUser] = useOutletContext()
+    const {currentUser} = useOutletContext()
 
     const myPins = useEffect(() => {
         fetch( URL + '/pins/' + currentUser.id)

@@ -110,17 +110,19 @@ def get_pins():
     pins = Pin.query.all()
     return jsonify([pin.to_dict(rules=('-user.id', '-user.address', '-user.admin', '-user.password_hash', 'user.fname', '-user.lname', '-user_id', '-plant_id')) for pin in pins]), 200
 
-@app.get(URL + '/pins/<int:id>')
-def get_pins_by_user_id(id):
+@app.get(URL + '/pins/<int:user_id>')
+def get_pins_by_user_id(user_id):
     # try: 
     # everything I try is none... current_user() even session.get('user_id')
-    user = session.get('user_id')
-    print("\n\nuser ID from session:", user)
-    current_user = User.query.filter(User.id == user).first()
-    print("current user id:", current_user)
+    user = current_user()
+    # print("\n\nuser ID from session:", user)
+    # pins = user.pins
+    # print("pins", pins)
+    # current_user = User.query.filter(User.id == user).first()
+    # print("current user id:", current_user)
     # print("user_id", user)
     # why is current_user None?
-    pins = Pin.query.filter(Pin.user_id == session.get('user_id')).all()
+    pins = Pin.query.filter(Pin.user_id == user.id).all()
     return jsonify([pin.to_dict(rules=('-user_id',)) for pin in pins]), 200
     # except Exception as e:
     #     return jsonify({"error": str(e)}), 406

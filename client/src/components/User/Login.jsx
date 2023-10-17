@@ -5,7 +5,7 @@ import "./userForm.css"
 
 export default function Login() {
 
-    const [attemptLogin] = useOutletContext()
+    const {attemptLogin} = useOutletContext()
 
     // STATE //
     const [username, setUsername] = useState('')
@@ -27,7 +27,8 @@ export default function Login() {
 
                 <h2>Log In</h2>
                 
-                <label htmlFor id="username">Username</label>
+                    <label htmlFor id="username">Username</label>
+
                 <input id="username"
                 type="text"
                 onChange={handleChangeUsername}
@@ -35,7 +36,7 @@ export default function Login() {
                 placeholder='username'
                 />
 
-                <label htmlFor id="password">Password</label>
+                <label htmlFor id="password">password</label>
                 <input id="password"
                 type="text"
                 onChange={handleChangePassword}

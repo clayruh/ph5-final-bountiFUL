@@ -6,7 +6,7 @@ import MyPins from '../MyPins'
 
 export default function UserPanel() {
 
-    const [currentUser, attemptLogin, attemptSignup, logout] = useOutletContext()
+    const {currentUser, attemptLogin, attemptSignup, logout} = useOutletContext()
 
     if (!currentUser) {
         return (
