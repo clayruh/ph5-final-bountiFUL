@@ -16,9 +16,7 @@ export default function MapBox() {
   function handleBookmark() {
     console.log("bookmarked!")
   }
-
-  // Fetch pin data and initialize the map
-  // have to add in dependency for pins or setPins
+  
   useEffect(() => {
     fetch( URL + '/pins')
       .then((res) => res.json())
@@ -77,22 +75,21 @@ export default function MapBox() {
     }
   }, [selectedPin]);
 
-  // just mapping to the page to see details
-  const mapPins = pins.map((pinObj) => (
-    <div key={pinObj.id}>
-      <img src={pinObj.image} style={{ width: 50 + 'px' }} alt={pinObj.plant.plant_name}/>
-      <h4>{pinObj.plant.plant_name}</h4>
-      <p>{pinObj.longitude}</p>
-      <p>{pinObj.latitude}</p>
-      <p>{pinObj.comment}</p>
-      <p>{pinObj.user?.username}</p>
-    </div>
-  ));
+  // // just mapping to the page to see details
+  // const mapPins = pins.map((pinObj) => (
+  //   <div key={pinObj.id}>
+  //     <img src={pinObj.image} style={{ width: 50 + 'px' }} alt={pinObj.plant.plant_name}/>
+  //     <h4>{pinObj.plant.plant_name}</h4>
+  //     <p>{pinObj.longitude}</p>
+  //     <p>{pinObj.latitude}</p>
+  //     <p>{pinObj.comment}</p>
+  //     <p>{pinObj.user?.username}</p>
+  //   </div>
+  // ));
 
   return (
     <div>
       <div ref={mapContainer} className="map-container"></div>
-      <div>{mapPins}</div>
     </div>
   );
 }

@@ -1,8 +1,36 @@
 :root {
-  --bg: #282c34;
+  --bg: #6B9B12;
   --header: #fff;
-  --link: #61dafb;
+  --link: #6B9B12;
   --text: hsla(0, 0%, 100%, 0.88);
+}
+
+/* NAVIGATION */
+h1 {
+  font-family: 'Fascinate', cursive;
+  font-size: 40px;
+}
+
+.main-header {
+  background-color: #F6F3CB;
+  /* color: var(--header); */
+  padding: 20px;
+  text-align: center;
+}
+
+.link {
+  font-family: 'Zilla slab';
+  font-weight: 600;
+  font-size: 18px;
+  margin: 5px;
+  padding: 5px;
+  color: var(--link);
+  text-decoration: none;
+}
+/* END NAVIGATION */
+
+p, h2, h3, h4, a {
+  font-family: 'Zilla Slab', serif;
 }
 
 label{
@@ -46,10 +74,6 @@ input[type=submit]{
   form{
     width: 100%;
   }
-}
-
-.link {
-  margin: 5px;
 }
 
 /* MAPBOX POPUP CONTENT */
@@ -147,6 +171,12 @@ input[type=submit]{
   margin: 10px;
   padding: 20px;
 }
+
+.pin-card img {
+  width: 100px;
+  border-radius: 5px;
+}
+
 
 .pin-card-text {
   margin-left: 20px;

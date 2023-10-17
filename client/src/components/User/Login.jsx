@@ -27,7 +27,7 @@ export default function Login() {
 
                 <h2>Log In</h2>
                 
-                    <label htmlFor id="username">Username</label>
+                <label htmlFor="username">Username</label>
 
                 <input id="username"
                 type="text"
@@ -36,7 +36,7 @@ export default function Login() {
                 placeholder='username'
                 />
 
-                <label htmlFor id="password">password</label>
+                <label htmlFor="password">password</label>
                 <input id="password"
                 type="text"
                 onChange={handleChangePassword}

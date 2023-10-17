@@ -5,10 +5,9 @@ export default function Header() {
 
     return (
         <header className='main-header'>
-            <h1>Wild Harvest</h1>
+            <h1>🌿 bountiFUL 🌿</h1>
             <nav className='nav-bar'>
                 <Link className="link" to='/'>Map</Link>
-                {/* <Link className="link" to='/sign-in'>Sign In</Link> */}
                 <Link className="link" to='/add-a-pin'>Add A Pin</Link>
                 <Link className="link" to='/account'>Account Settings</Link>
             </nav>

@@ -11,11 +11,11 @@ export default function UserPanel() {
     if (!currentUser) {
         return (
             <div className="flex-row">
-                <Signup attemptSignup={attemptSignup} />
+                <Login attemptLogin={attemptLogin} />
             </div>
         )
     } else {
-        <Login attemptLogin={attemptLogin} />
+        <Signup attemptSignup={attemptSignup} />
     } if (currentUser) {
         return (
             <>

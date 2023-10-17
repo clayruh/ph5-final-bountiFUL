@@ -22,6 +22,7 @@ export default function MyPinsList() {
                 setPins(data);
             })
     }, [] )
+    // when I add pins and setPins to the dependency, it constantly updates the page
 
     const mapPins = pins.map((pinObj) => (
         <MyPinsCard key={pinObj.id} pinObj={pinObj}/>

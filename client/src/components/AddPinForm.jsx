@@ -115,10 +115,11 @@ export default function AddPinForm() {
         }
         geocode()
         }
-    }, [address, minCharTyped] )
+        // don't need the address state because we're just going to depend on minCharTyped as the dependency
+    }, [minCharTyped] )
 
     function handleSuggestionClick(selectedLocation) {
-        // these two states are being set separately? is that why I have to click twice to get the address
+        // resetting suggestions to empty, and address to the selected location
         setSuggestions([])
         setAddress(selectedLocation.name)
         console.log("latitude", selectedLocation.latitude)
