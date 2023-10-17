@@ -4,8 +4,6 @@ from flask import Flask, request, jsonify, session
 from flask_bcrypt import Bcrypt
 import requests
 import base64
-from PIL import Image
-from PIL.ExifTags import TAGS, GPSTAGS
 
 # Local imports
 from config import app, db
@@ -85,16 +83,18 @@ def get_users():
 
 @app.get(URL + '/users/<int:id>')
 def get_users_by_id(id):
-    user=User.query.filter(User.id==id).first()
+    logged_in_user=current_user()
+    user=User.query.filter(User.id==logged_in_user).first()
     return jsonify(user.to_dict(rules=('-pins',))), 200
-
 
 @app.patch(URL + '/users/<int:id>')
 def edit_user(id):
     data = request.json
-    User.query.filter(User.id == id).update(data)
+    logged_in_user=current_user()
+    print("logged in user:", logged_in_user)
+    User.query.filter(User.id == logged_in_user).update(data)
     db.session.commit()
-    user = User.query.filter(User.id == id).first()
+    user = User.query.filter(User.id == logged_in_user).first()
     return jsonify(user.to_dict()), 202
 
 @app.delete(URL + '/users/<int:id>')
@@ -113,14 +113,14 @@ def get_pins():
 @app.get(URL + '/pins/<int:id>')
 def get_pins_by_user_id(id):
     # try: 
-    # user = current_user()
-    current_user = User.query.filter(User.id == session.get('user_id')).first()
+    # everything I try is none... current_user() even session.get('user_id')
+    user = session.get('user_id')
+    print("\n\nuser ID from session:", user)
+    current_user = User.query.filter(User.id == user).first()
     print("current user id:", current_user)
-    # user = current_user()
     # print("user_id", user)
-    print(check_session())
     # why is current_user None?
-    pins = Pin.query.filter(Pin.user_id == current_user).all()
+    pins = Pin.query.filter(Pin.user_id == session.get('user_id')).all()
     return jsonify([pin.to_dict(rules=('-user_id',)) for pin in pins]), 200
     # except Exception as e:
     #     return jsonify({"error": str(e)}), 406

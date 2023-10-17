@@ -26,7 +26,8 @@ export default function Login() {
             <form className='user-form' onSubmit={handleSubmit}>
 
                 <h2>Log In</h2>
-
+                
+                <label htmlFor id="username">Username</label>
                 <input id="username"
                 type="text"
                 onChange={handleChangeUsername}
@@ -34,6 +35,7 @@ export default function Login() {
                 placeholder='username'
                 />
 
+                <label htmlFor id="password">Password</label>
                 <input id="password"
                 type="text"
                 onChange={handleChangePassword}
@@ -42,10 +44,10 @@ export default function Login() {
                 />
 
                 <input type="submit"
-                value="Log in"
+                value="LOGIN"
                 />
 
-                <span>No account? <a href="/signup">Sign Up</a></span>
+                <span>No account? <a href="/signup">SIGN UP</a></span>
 
             </form>
         </div>

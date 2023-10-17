@@ -5,19 +5,9 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
-.link {
-  margin: 5px;
-}
-
-.map-container {
-  height: 600px;
-}
-
-.mapboxgl-marker {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
+label{
+  display: flex;
+  flex-direction: row;
 }
 
 form{
@@ -35,27 +25,48 @@ form{
 form input{
   margin: 10px;
   padding: 10px;
-  border: 1px solid black;
-  border-radius: 15px;
+  border: 1px solid rgb(139, 139, 139);
+  border-radius: 8px;
   width: 300px;
-  background-color: #D9D9D9;
-  border: none
+  background-color: #ffffff;
 }
 
-form button{
+input[type=submit]{
   margin: 10px;
   padding: 10px;
-  border: 1px solid black;
-  border-radius: 15px;
-  width: 300px;
-  background-color: #D9D9D9;
-  border: none
+  border-radius: 8px;
+  width: 322px;
+  color: white;
+  border: 1px solid #E64A07;
+  background-color: #E64A07;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
   form{
     width: 100%;
   }
+}
+
+.link {
+  margin: 5px;
+}
+
+/* MAPBOX POPUP CONTENT */
+.mapbox-popup {
+  display: flex;
+  flex-direction: row;
+}
+
+.map-container {
+  height: 600px;
+}
+
+.mapboxgl-marker {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 /* MAPBOX POPUP POSITION */
@@ -103,9 +114,11 @@ form button{
 .mapboxgl-popup-content {
   text-align: left;
   font-family: 'Open Sans', sans-serif;
-  /* box-shadow: 3px 3px 2px #282c34; */
   border-style: solid;
   border-width: 1px;
+  display: flex !important;
+  flex-direction: row !important;
+  padding: 0;
 }
 
 .mapboxgl-popup-content-wrapper {

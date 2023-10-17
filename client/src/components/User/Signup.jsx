@@ -26,51 +26,58 @@ export default function Signup() {
     }
 
     return (
-        <form className='user-form' onSubmit={handleSubmit}>
+        <div className='form-container'>
+            <form className='user-form' onSubmit={handleSubmit}>
 
-            <h2>Sign Up</h2>
+                <h2>Sign Up</h2>
 
-            <input id="fname" 
-            type="text"
-            onChange={handleChangeFName}
-            value={fname}
-            placeholder='First Name'
-            />
+                <label htmlFor="fname">First Name</label>
+                <input id="fname" 
+                type="text"
+                onChange={handleChangeFName}
+                value={fname}
+                placeholder='First Name'
+                />
 
-            <input id="lname" 
-            type="text"
-            onChange={handleChangeLName}
-            value={lname}
-            placeholder='Last Name'
-            />
+                <label htmlFor="lname">Last Name</label>
+                <input id="lname" 
+                type="text"
+                onChange={handleChangeLName}
+                value={lname}
+                placeholder='Last Name'
+                />
 
-            <input id="address" 
-            type="text"
-            onChange={handleChangeAddress}
-            value={address}
-            placeholder='address'
-            />
+                <label htmlFor="address">Address</label>
+                <input id="address" 
+                type="text"
+                onChange={handleChangeAddress}
+                value={address}
+                placeholder='address'
+                />
 
-            <input id="username" 
-            type="text"
-            onChange={handleChangeUsername}
-            value={username}
-            placeholder='username'
-            />
+                <label htmlFor="username">Username</label>
+                <input id="username" 
+                type="text"
+                onChange={handleChangeUsername}
+                value={username}
+                placeholder='username'
+                />
 
-            <input id="password"
-            type="text"
-            onChange={handleChangePassword}
-            value={password}
-            placeholder='password'
-            />
+                <label htmlFor="password">Password</label>
+                <input id="password"
+                type="text"
+                onChange={handleChangePassword}
+                value={password}
+                placeholder='password'
+                />
 
-            <input type="submit"
-            value="Sign Up"
-            />
+                <input type="submit"
+                value="SIGN UP"
+                />
 
-            <span>Already have an account? <a href="/login"> Login</a></span>
+                <span>Already a user? <a href="/login">LOGIN</a></span>
 
-        </form>
+            </form>
+        </div>
     )
 }

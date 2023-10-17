@@ -118,11 +118,11 @@ export default function AddPinForm() {
     }, [address, minCharTyped] )
 
     function handleSuggestionClick(selectedLocation) {
-        setSelectedSuggestion(selectedLocation)
+        // these two states are being set separately? is that why I have to click twice to get the address
+        setSuggestions([])
+        setAddress(selectedLocation.name)
         console.log("latitude", selectedLocation.latitude)
         console.log("longitude", selectedLocation.longitude)
-        setAddress(selectedLocation.name)
-        setSuggestions([])
       }
 
     return (

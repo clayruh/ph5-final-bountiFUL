@@ -20,8 +20,11 @@ export default function UserPanel() {
         return (
             <>
                 <h2>Hi {currentUser.fname} {currentUser.lname}</h2>
-                <MyPins/>
+                <p>username: {currentUser.username}</p>
+                <p>address: {currentUser.address}</p>
+
                 <button onClick={logout}>Logout</button>
+                <MyPins/>
             </>
         )
     }
