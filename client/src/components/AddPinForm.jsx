@@ -5,7 +5,6 @@ const URL = "/api/v1"
 
 export default function AddPinForm() {
 
-
     const navigate = useNavigate()
 
     const [currentUser] = useOutletContext()
@@ -43,7 +42,7 @@ export default function AddPinForm() {
     }
 
     // SEND PHOTO TO PLANT ID API //
-    function handleImageUpload(e) {
+    function handleFormSubmit(e) {
         e.preventDefault()
 
         if (e.target) {
@@ -127,7 +126,7 @@ export default function AddPinForm() {
       }
 
     return (
-        <form onSubmit={handleImageUpload}>
+        <form onSubmit={handleFormSubmit}>
           <label htmlFor="upload-image">upload image</label>
           <input 
             id="upload-image" 

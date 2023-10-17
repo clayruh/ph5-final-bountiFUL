@@ -110,11 +110,20 @@ def get_pins():
     pins = Pin.query.all()
     return jsonify([pin.to_dict(rules=('-user.id', '-user.address', '-user.admin', '-user.password_hash', 'user.fname', '-user.lname', '-user_id', '-plant_id')) for pin in pins]), 200
 
-# is this right? current_user()? or session.get('user_id')
 @app.get(URL + '/pins/<int:id>')
 def get_pins_by_user_id(id):
-    pin = Pin.query.filter(Pin.user_id == current_user()).first()
-    return jsonify(pin.to_dict(rules=('-user_id',))), 200
+    # try: 
+    # user = current_user()
+    current_user = User.query.filter(User.id == session.get('user_id')).first()
+    print("current user id:", current_user)
+    # user = current_user()
+    # print("user_id", user)
+    print(check_session())
+    # why is current_user None?
+    pins = Pin.query.filter(Pin.user_id == current_user).all()
+    return jsonify([pin.to_dict(rules=('-user_id',)) for pin in pins]), 200
+    # except Exception as e:
+    #     return jsonify({"error": str(e)}), 406
 
 @app.post(URL + '/pins')
 def create_pin():

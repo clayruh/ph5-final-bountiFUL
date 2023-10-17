@@ -84,7 +84,8 @@ export default function MapBox() {
       <h4>{pinObj.plant.plant_name}</h4>
       <p>{pinObj.longitude}</p>
       <p>{pinObj.latitude}</p>
-      {/* <p>{pinObj.user.username}</p> */}
+      <p>{pinObj.comment}</p>
+      <p>{pinObj.user?.username}</p>
     </div>
   ));
 

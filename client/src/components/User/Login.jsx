@@ -5,8 +5,7 @@ import "./userForm.css"
 
 export default function Login() {
 
-    const [currentUser, attemptLogin, attemptSignup, logout] = useOutletContext()
-    console.log(currentUser)
+    const [attemptLogin] = useOutletContext()
 
     // STATE //
     const [username, setUsername] = useState('')

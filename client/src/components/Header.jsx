@@ -10,7 +10,7 @@ export default function Header() {
                 <Link className="link" to='/'>Map</Link>
                 {/* <Link className="link" to='/sign-in'>Sign In</Link> */}
                 <Link className="link" to='/add-a-pin'>Add A Pin</Link>
-                <Link className="link" to='/account'>Account</Link>
+                <Link className="link" to='/account'>Account Settings</Link>
             </nav>
         </header>
     )
