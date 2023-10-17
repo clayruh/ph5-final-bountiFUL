@@ -2,7 +2,7 @@ import Signup from './Signup'
 import Login from './Login'
 import { useOutletContext } from 'react-router-dom'
 
-import MyPins from '../MyPins'
+import MyPinsList from '../MyPinsList'
 
 export default function UserPanel() {
 
@@ -24,7 +24,7 @@ export default function UserPanel() {
                 <p>address: {currentUser.address}</p>
 
                 <button onClick={logout}>Logout</button>
-                <MyPins/>
+                <MyPinsList/>
             </>
         )
     }

@@ -128,3 +128,32 @@ input[type=submit]{
 .mapboxgl-popup-content img {
   width: 40%;
 }
+
+
+/* USER PINS */
+
+.pin-card-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.pin-card {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 300px;
+  margin: 10px;
+  padding: 20px;
+}
+
+.pin-card-text {
+  margin-left: 20px;
+}
+
+.pin-card-text h4 {
+  margin: 10px 0px;
+}
+
+/* END USER PINS */

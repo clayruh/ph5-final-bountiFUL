@@ -6,36 +6,33 @@
 import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 
+import MyPinsCard from './MyPinsCard'
+
 const URL = "/api/v1"
 
-export default function UserPins() {
+export default function MyPinsList() {
 
     const [pins, setPins] = useState([])
     const {currentUser} = useOutletContext()
 
-    const myPins = useEffect(() => {
+    useEffect(() => {
         fetch( URL + '/pins/' + currentUser.id)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+                setPins(data);
             })
     }, [] )
 
-    // const mapPins = myPins.map((pinObj) => (
-    //     <div key={pinObj.id}>
-    //       <img src={pinObj.image} style={{ width: 50 + 'px' }} alt={pinObj.plant.plant_name}/>
-    //       <h4>{pinObj.plant.plant_name}</h4>
-    //       <p>{pinObj.longitude}</p>
-    //       <p>{pinObj.latitude}</p>
-    //       <p>{pinObj.comment}</p>
-    //       <p>{pinObj.user?.username}</p>
-    //     </div>
-    //   ));
+    const mapPins = pins.map((pinObj) => (
+        <MyPinsCard key={pinObj.id} pinObj={pinObj}/>
+      ));
 
     return (
         <>
             <h3>All My Pins</h3>
-            {/* {myPins} */}
+            <div className="pin-card-list">
+                {mapPins}
+            </div>
         </>
     )
 }
