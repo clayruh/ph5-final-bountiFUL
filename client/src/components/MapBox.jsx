@@ -16,7 +16,7 @@ export default function MapBox() {
   function handleBookmark() {
     console.log("bookmarked!")
   }
-  
+
   useEffect(() => {
     fetch( URL + '/pins')
       .then((res) => res.json())
@@ -30,6 +30,13 @@ export default function MapBox() {
             center: [-73.916369, 40.724461],
             zoom: 11,
           });
+          map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+          map.current.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+              enableHighAccuracy: true,
+            },
+            trackUserLocation: true
+          }), 'top-right');
         }
 
         allData.forEach((pinObj) => {
