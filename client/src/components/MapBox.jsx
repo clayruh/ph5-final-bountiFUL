@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl';
+// import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -37,6 +39,11 @@ export default function MapBox() {
             },
             trackUserLocation: true
           }), 'top-right');
+          // // instantiate MapboxDirections
+          // const directions = new MapboxDirections({
+          //   accessToken: mapboxgl.accessToken,
+          // })
+          // map.current.addControl(directions, 'top-left');
         }
 
         allData.forEach((pinObj) => {

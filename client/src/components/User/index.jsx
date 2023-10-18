@@ -3,10 +3,12 @@ import Login from './Login'
 import { useOutletContext } from 'react-router-dom'
 
 import MyPinsList from '../MyPinsList'
+import {useState} from 'react'
 
 export default function UserPanel() {
 
     const {currentUser, attemptLogin, attemptSignup, logout} = useOutletContext()
+    const [editForm, setEditForm] = useState(false)
 
     if (!currentUser) {
         return (

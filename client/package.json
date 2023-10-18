@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "heic-convert": "^1.2.4",
     "mapbox-gl": "^2.14.1",
+    "mapbox-gl-directions": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
