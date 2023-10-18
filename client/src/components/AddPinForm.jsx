@@ -49,15 +49,17 @@ export default function AddPinForm() {
         const formData = new FormData(e.target)
         console.log(e.target)
         console.log([...formData.entries()].forEach(i => console.log(i)))
+        // if a user is logged in
         if (currentUser !== null) {
+            // if they selected current location
             if (optIn === true) {
             formData.append("lat", latlng.lat)
             formData.append("lng", latlng.lng)
+            // if they didn't select current location, add in address
             } else if (optIn === false) {
             formData.append("lat", selectedSuggestion.latitude)
             formData.append("lng", selectedSuggestion.longitude)
             }
-    
             async function upload_image_to_database () {
             await fetch(URL + '/process-image', {
                 method: 'POST',
@@ -86,7 +88,6 @@ export default function AddPinForm() {
         } else {
             alert("Please log in or sign up to add a pin")
         }
-
         }
     }
 
@@ -131,21 +132,24 @@ export default function AddPinForm() {
         <div className="form-container">
             <form onSubmit={handleFormSubmit}>
             <h2>Add a Pin</h2>
-            <label htmlFor="upload-image">Upload an image</label>
+            <label htmlFor="upload-image">Upload an image <span style={{color: 'red'}}>required</span></label>
             <input 
                 id="upload-image" 
                 name="upload-image"
                 type="file" 
                 accept="image/*, .heic" 
                 capture="camera"
+                required
             />
-            <input 
+            
+            <label htmlFor="current-position">Use my current location 
+                <input 
                 type="checkbox" 
                 id="current-position" 
                 name="current-position" 
                 checked={optIn}
                 onChange={getCurrentPosition}></input>
-            <label htmlFor="current-position">Use my current location</label>
+            </label>
             <label htmlFor="address">Address</label>
             <input 
                 id="address" 
@@ -156,6 +160,7 @@ export default function AddPinForm() {
                 setAddress(e.target.value)
                 setMinCharTyped(e.target.value.length >= 7)}}
                 disabled={optIn}
+                required
                 />
             <ul>
                 {suggestions.map( (location, index) => (

@@ -64,7 +64,11 @@ form h2 {
   font-size: 25px;
 }
 
-form input{
+form *:required {
+  background-color: yellow;
+}
+
+form input, form textarea{
   margin: 5px;
   margin-bottom: 20px;
   padding: 10px;
@@ -88,20 +92,17 @@ input[type=submit]{
   letter-spacing: 0.07em;
 }
 
+/* play with the form className's padding, to move input fields and labels to be left aligned */
+
 form textarea {
-  margin: 5px;
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid rgb(139, 139, 139);
-  border-radius: 8px;
   width: 450px;
-  background-color: #ffffff;
   font-family: 'Zilla Slab', serif;
 }
 .comment-input {
   height: 70px;
 }
 
+/* FOR MOBILE VERSION */
 @media screen and (max-width: 768px) {
   form{
     width: 100%;
@@ -119,7 +120,11 @@ form textarea {
   form textarea {
     width: 65%;
   }
+
+  
+
 }
+/* END FOR MOBILE VERSION */
 
 /* MAPBOX POPUP CONTENT */
 .mapbox-popup {
@@ -128,7 +133,7 @@ form textarea {
 }
 
 .map-container {
-  height: 600px;
+  height: 500px;
 }
 
 .mapboxgl-marker {

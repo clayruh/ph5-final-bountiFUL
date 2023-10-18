@@ -1,4 +1,4 @@
-export default function MyPinsCard({pinObj}) {
+export default function MyPinsCard({pinObj, edit=true}) {
 
     const URL = "/api/v1"
 
@@ -19,14 +19,18 @@ export default function MyPinsCard({pinObj}) {
 
     return (
         <div key={pinObj.id} id={`id-${pinObj.id}`} className="pin-card">
-            <img src={pinObj.image} alt={pinObj.plant.plant_name}/>
+            <img src={pinObj.image} alt={pinObj.plant?.plant_name}/>
             <div className="pin-card-text">
                 <h4>{pinObj.plant.plant_name}</h4>
                 {/* could try to do reverse geocoding here to get location name/address */}
                 <p>{pinObj.longitude}, {pinObj.latitude}</p>
                 <p>{pinObj.comment}</p>
-                <button>edit</button>
-                <button onClick={() => destroyPinAndDeletePinData(pinObj.id)}>delete</button>
+                {(edit === true) ? ( <>
+                    <button>edit</button>
+                    <button onClick={() => destroyPinAndDeletePinData(pinObj.id)}>delete</button>
+                    </>) : null
+                }
+                
             </div>
         </div>
     )

@@ -15,10 +15,16 @@ export default function RecentPins() {
         })
     }, [])
 
+    const mapPins = pins.map((pinObj) => (
+        <MyPinsCard key={pinObj.id} pinObj={pinObj} edit={false}/>
+    ))
+
     return (
         <>
-            <h2>Most Recent Pin</h2>
-            {/* <MyPinsCard key={pins.id} pinObj={pins}/> */}
+            <h2>Most Recent Pins</h2>
+            <div className="pin-card-list">
+                {mapPins} 
+            </div>
         </>
     )
 }

@@ -124,8 +124,8 @@ def get_pins_by_user_id(user_id):
 # get the last pin that was created
 @app.get(URL + '/last-pin')
 def get_last_pin():
-    last_pin = Pin.query.order_by(Pin.id.desc()).first()
-    return jsonify(last_pin.to_dict()), 200
+    last_few_pins = Pin.query.order_by(Pin.id.desc()).limit(6).all()
+    return jsonify([pin.to_dict() for pin in last_few_pins]), 200
 
 @app.post(URL + '/pins')
 def create_pin():
