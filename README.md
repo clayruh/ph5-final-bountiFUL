@@ -5,5 +5,5 @@
 ### Technology
 * JavaScript
 * React
-* Google Maps API
+* MapBox API
 * Plant.id API
