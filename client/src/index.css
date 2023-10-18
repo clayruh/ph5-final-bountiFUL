@@ -39,9 +39,10 @@ p, h2, h3, h4, a, input, label {
 }
 
 label{
+  width: 100%;
   /* font-size: 15px; */
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
 }
 
 *:disabled {
@@ -55,26 +56,35 @@ form{
   align-items: center;
   height: 80vh;
   border: 1px solid black;
-  border-radius: 15px;
+  border-radius: 10px;
   width: 50%;
   margin: 20px;
+  padding: 0px 100px;
 }
 
 form h2 {
   font-size: 25px;
 }
 
-form *:required {
-  background-color: yellow;
+form span {
+  color: red;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form input {
+  height: 40px;
+  /* padding: 5px; */
 }
 
 form input, form textarea{
   margin: 5px;
   margin-bottom: 20px;
-  padding: 10px;
   border: 1px solid rgb(139, 139, 139);
   border-radius: 8px;
-  width: 300px;
+  width: 100%;
   background-color: #ffffff;
   font-size: 14px;
 }
@@ -107,21 +117,28 @@ form textarea {
   form{
     width: 100%;
     height: 75vh;
+    padding: 0px 35px;
   }
 
   form input{
-    width: 65%;
+    width: 100%;
   }
 
   form input[type=submit]{
-    width: 72%;
+    width: 100%;
   }
 
   form textarea {
-    width: 65%;
+    width: 100%;
   }
 
-  
+  .recent-pins h2 {
+    text-align: center;
+  }
+
+  .pin-card-list {
+    justify-content: center;
+  }
 
 }
 /* END FOR MOBILE VERSION */
@@ -133,7 +150,7 @@ form textarea {
 }
 
 .map-container {
-  height: 500px;
+  height: 600px;
 }
 
 .mapboxgl-marker {

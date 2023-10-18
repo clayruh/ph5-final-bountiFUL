@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useOutletContext, useNavigate } from 'react-router-dom'
 
 export default function Signup() {
+
+    const navigate = useNavigate()
 
     const {attemptSignup} = useOutletContext()
 
@@ -23,6 +25,7 @@ export default function Signup() {
     function handleSubmit(e) {
         e.preventDefault()
         attemptSignup({ username, password, fname, lname, address})
+        navigate('/account')
     }
 
     return (
@@ -36,7 +39,6 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangeFName}
                 value={fname}
-                placeholder='First Name'
                 />
 
                 <label htmlFor="lname">Last Name</label>
@@ -44,7 +46,6 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangeLName}
                 value={lname}
-                placeholder='Last Name'
                 />
 
                 <label htmlFor="address">Address</label>
@@ -52,7 +53,6 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangeAddress}
                 value={address}
-                placeholder='Address'
                 />
 
                 <label htmlFor="username">Username</label>
@@ -60,7 +60,6 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangeUsername}
                 value={username}
-                placeholder='Username'
                 />
 
                 <label htmlFor="password">Password</label>
@@ -68,7 +67,6 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangePassword}
                 value={password}
-                placeholder='Password'
                 />
 
                 <input type="submit"

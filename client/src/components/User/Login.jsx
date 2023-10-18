@@ -33,7 +33,6 @@ export default function Login() {
                 type="text"
                 onChange={handleChangeUsername}
                 value={username}
-                placeholder='username'
                 />
 
                 <label htmlFor="password">Password</label>
@@ -41,7 +40,6 @@ export default function Login() {
                 type="text"
                 onChange={handleChangePassword}
                 value={password}
-                placeholder='password'
                 />
 
                 <input type="submit"

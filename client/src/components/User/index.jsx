@@ -9,6 +9,7 @@ export default function UserPanel() {
 
     const {currentUser, attemptLogin, attemptSignup, logout} = useOutletContext()
     const [editForm, setEditForm] = useState(false)
+    
 
     function handleEdit() {
         setEditForm(!editForm)

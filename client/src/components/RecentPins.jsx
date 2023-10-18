@@ -20,11 +20,12 @@ export default function RecentPins() {
     ))
 
     return (
-        <>
+        <div className="recent-pins">
             <h2>Most Recent Pins</h2>
+            {/* <p>Check out the most recent pins created by our users!</p> */}
             <div className="pin-card-list">
                 {mapPins} 
             </div>
-        </>
+        </div>
     )
 }

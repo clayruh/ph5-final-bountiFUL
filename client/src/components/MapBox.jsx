@@ -63,7 +63,6 @@ export default function MapBox() {
                     <p> - ${pinObj.user?.username}</p>
                   </div>
                   <div className="bookmark-button">
-                    <button onChange=${handleBookmark}>bookmark</button>
                   </div>
                 </div>
                 `

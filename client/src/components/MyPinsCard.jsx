@@ -25,6 +25,7 @@ export default function MyPinsCard({pinObj, edit=true}) {
                 {/* could try to do reverse geocoding here to get location name/address */}
                 <p>{pinObj.longitude}, {pinObj.latitude}</p>
                 <p>{pinObj.comment}</p>
+                <p> - {pinObj.user?.username}</p>
                 {(edit === true) ? ( <>
                     <button>edit</button>
                     <button onClick={() => destroyPinAndDeletePinData(pinObj.id)}>delete</button>

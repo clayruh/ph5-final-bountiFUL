@@ -86,7 +86,7 @@ export default function AddPinForm() {
             }
             upload_image_to_database()
         } else {
-            alert("Please log in or sign up to add a pin")
+            alert("Please log in to add a pin")
         }
         }
     }
@@ -132,7 +132,7 @@ export default function AddPinForm() {
         <div className="form-container">
             <form onSubmit={handleFormSubmit}>
             <h2>Add a Pin</h2>
-            <label htmlFor="upload-image">Upload an image <span style={{color: 'red'}}>required</span></label>
+            <label htmlFor="upload-image">Upload an image<span >*</span></label>
             <input 
                 id="upload-image" 
                 name="upload-image"
@@ -141,14 +141,13 @@ export default function AddPinForm() {
                 capture="camera"
                 required
             />
-            
-            <label htmlFor="current-position">Use my current location 
-                <input 
+            <label htmlFor="current-position"><input 
                 type="checkbox" 
                 id="current-position" 
                 name="current-position" 
                 checked={optIn}
                 onChange={getCurrentPosition}></input>
+                Use my current location 
             </label>
             <label htmlFor="address">Address</label>
             <input 

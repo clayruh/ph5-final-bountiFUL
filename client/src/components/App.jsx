@@ -17,6 +17,7 @@ export default function App() {
 
   // STATE //
   const [currentUser, setCurrentUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   // USE EFFECT //
   useEffect( () => {
@@ -32,7 +33,11 @@ export default function App() {
     .then( res => {
       if (res.ok) {
         res.json()
-        .then( data => setCurrentUser(data) )
+        .then( data => {
+          // checking current user + loading state
+          setCurrentUser(data) 
+          setLoading(false)
+        })
       }
     })
   }, [] )
@@ -82,7 +87,11 @@ export default function App() {
 
     <div>
       <Header/>
-      <Outlet context={ {currentUser, attemptLogin, attemptSignup, logout} }/>
+      {
+        // checking loading state
+        (loading)? <p>Loading...</p> : 
+        <Outlet context={ {currentUser, attemptLogin, attemptSignup, logout} }/>
+      }
 
       {/* <UserPanel
         currentUser={currentUser}
