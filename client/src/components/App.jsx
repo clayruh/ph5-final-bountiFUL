@@ -31,12 +31,12 @@ export default function App() {
     // checkSession()
     fetch(URL + '/check_session')
     .then( res => {
+      // checking current user + loading state
+      setLoading(false)
       if (res.ok) {
         res.json()
         .then( data => {
-          // checking current user + loading state
           setCurrentUser(data) 
-          setLoading(false)
         })
       }
     })

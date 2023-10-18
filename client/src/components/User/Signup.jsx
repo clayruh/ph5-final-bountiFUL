@@ -64,7 +64,8 @@ export default function Signup() {
 
                 <label htmlFor="password">Password</label>
                 <input id="password"
-                type="text"
+                // turns the field input into asterisks
+                type="password"
                 onChange={handleChangePassword}
                 value={password}
                 />
