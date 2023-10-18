@@ -10,6 +10,10 @@ export default function UserPanel() {
     const {currentUser, attemptLogin, attemptSignup, logout} = useOutletContext()
     const [editForm, setEditForm] = useState(false)
 
+    function handleEdit() {
+        setEditForm(!editForm)
+    }
+
     if (!currentUser) {
         return (
             <div className="flex-row">
@@ -20,15 +24,20 @@ export default function UserPanel() {
         <Signup attemptSignup={attemptSignup} />
     } if (currentUser) {
         return (
-            <>
-                <h2>Hi {currentUser.fname} {currentUser.lname}</h2>
-                <p>username: {currentUser.username}</p>
-                <p>password: ********</p>
-                <p>address: {currentUser.address}</p>
+            <div className="account-page">
+                <div className="account-details">
+                    <h2>Account</h2>
+                    <p>full name: {currentUser.fname} {currentUser.lname}</p>
+                    <p>username: {currentUser.username}</p>
+                    <p>password: ********</p>
+                    <p>address: {currentUser.address}</p>
 
-                <button onClick={logout}>Logout</button>
+                    <button onClick={handleEdit}>Edit Settings</button>
+                    <br></br>
+                    <button onClick={logout}>Logout</button>
+                </div>
                 <MyPinsList/>
-            </>
+            </div>
         )
     }
 }

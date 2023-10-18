@@ -3,6 +3,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl';
 // import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 
+import RecentPins from './RecentPins'
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -28,7 +29,7 @@ export default function MapBox() {
         if (!map.current) {
           map.current = new mapboxgl.Map({
             container: mapContainer.current,
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'mapbox://styles/mapbox/satellite-v9',
             center: [-73.916369, 40.724461],
             zoom: 11,
           });
@@ -83,8 +84,8 @@ export default function MapBox() {
     if (selectedPin) {
       map.current.flyTo({
         center: [selectedPin.longitude, selectedPin.latitude],
-        zoom: 11,
-        duration: 2500,
+        // zoom: 11,
+        duration: 500,
       });
     }
   }, [selectedPin]);
@@ -104,6 +105,7 @@ export default function MapBox() {
   return (
     <div>
       <div ref={mapContainer} className="map-container"></div>
+      <RecentPins />
     </div>
   );
 }

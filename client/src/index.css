@@ -72,6 +72,7 @@ form input{
   border-radius: 8px;
   width: 300px;
   background-color: #ffffff;
+  font-size: 14px;
 }
 
 input[type=submit]{
@@ -87,6 +88,20 @@ input[type=submit]{
   letter-spacing: 0.07em;
 }
 
+form textarea {
+  margin: 5px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid rgb(139, 139, 139);
+  border-radius: 8px;
+  width: 450px;
+  background-color: #ffffff;
+  font-family: 'Zilla Slab', serif;
+}
+.comment-input {
+  height: 70px;
+}
+
 @media screen and (max-width: 768px) {
   form{
     width: 100%;
@@ -99,6 +114,10 @@ input[type=submit]{
 
   form input[type=submit]{
     width: 72%;
+  }
+
+  form textarea {
+    width: 65%;
   }
 }
 
@@ -179,6 +198,12 @@ input[type=submit]{
   width: 40%;
 }
 
+/* USER SETTINGS */
+.account-page {
+  margin: 10px;
+}
+
+/* END USER SETTINGS */
 
 /* USER PINS */
 
@@ -194,7 +219,8 @@ input[type=submit]{
   border: 1px solid black;
   border-radius: 10px;
   width: 300px;
-  margin: 10px;
+  margin: 10px 0px;
+  margin-right: 15px;
   padding: 20px;
 }
 

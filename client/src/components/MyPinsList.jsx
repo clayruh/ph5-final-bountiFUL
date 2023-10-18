@@ -21,19 +21,18 @@ export default function MyPinsList() {
             .then((data) => {
                 setPins(data);
             })
-    }, [] )
-    // when I add pins and setPins to the dependency, it constantly updates the page
+    }, [])
 
     const mapPins = pins.map((pinObj) => (
         <MyPinsCard key={pinObj.id} pinObj={pinObj}/>
       ));
 
     return (
-        <>
-            <h3>All My Pins</h3>
+        <div className="my-pins-list">
+            <h2>My Pins</h2>
             <div className="pin-card-list">
                 {mapPins}
             </div>
-        </>
+        </div>
     )
 }

@@ -139,7 +139,6 @@ export default function AddPinForm() {
                 accept="image/*, .heic" 
                 capture="camera"
             />
-            <br/>
             <input 
                 type="checkbox" 
                 id="current-position" 
@@ -147,7 +146,6 @@ export default function AddPinForm() {
                 checked={optIn}
                 onChange={getCurrentPosition}></input>
             <label htmlFor="current-position">Use my current location</label>
-            <br/>
             <label htmlFor="address">Address</label>
             <input 
                 id="address" 
@@ -159,7 +157,6 @@ export default function AddPinForm() {
                 setMinCharTyped(e.target.value.length >= 7)}}
                 disabled={optIn}
                 />
-            <br/>
             <ul>
                 {suggestions.map( (location, index) => (
                 <li key={index} onClick={() => handleSuggestionClick(location)}>
@@ -168,8 +165,7 @@ export default function AddPinForm() {
                 ) )}
             </ul>
             <label htmlFor="comment">Comment</label>
-            <input type="text" name="comment"/>
-            <br/>
+            <textarea type="text" name="comment" className="comment-input"/>
             <input type="submit" value="ADD A PIN"/>
         </form>
       </div>

@@ -121,6 +121,12 @@ def get_pins_by_user_id(user_id):
     # except Exception as e:
     #     return jsonify({"error": str(e)}), 406
 
+# get the last pin that was created
+@app.get(URL + '/last-pin')
+def get_last_pin():
+    last_pin = Pin.query.order_by(Pin.id.desc()).first()
+    return jsonify(last_pin.to_dict()), 200
+
 @app.post(URL + '/pins')
 def create_pin():
     data = request.json
