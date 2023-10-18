@@ -52,7 +52,7 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangeAddress}
                 value={address}
-                placeholder='address'
+                placeholder='Address'
                 />
 
                 <label htmlFor="username">Username</label>
@@ -60,7 +60,7 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangeUsername}
                 value={username}
-                placeholder='username'
+                placeholder='Username'
                 />
 
                 <label htmlFor="password">Password</label>
@@ -68,7 +68,7 @@ export default function Signup() {
                 type="text"
                 onChange={handleChangePassword}
                 value={password}
-                placeholder='password'
+                placeholder='Password'
                 />
 
                 <input type="submit"

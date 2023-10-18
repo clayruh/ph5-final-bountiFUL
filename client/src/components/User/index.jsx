@@ -21,6 +21,7 @@ export default function UserPanel() {
             <>
                 <h2>Hi {currentUser.fname} {currentUser.lname}</h2>
                 <p>username: {currentUser.username}</p>
+                <p>password: ********</p>
                 <p>address: {currentUser.address}</p>
 
                 <button onClick={logout}>Logout</button>

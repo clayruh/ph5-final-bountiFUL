@@ -122,52 +122,56 @@ export default function AddPinForm() {
         // resetting suggestions to empty, and address to the selected location
         setSuggestions([])
         setAddress(selectedLocation.name)
+        setSelectedSuggestion(selectedLocation)
         console.log("latitude", selectedLocation.latitude)
         console.log("longitude", selectedLocation.longitude)
       }
 
     return (
-        <form onSubmit={handleFormSubmit}>
-          <label htmlFor="upload-image">upload image</label>
-          <input 
-            id="upload-image" 
-            name="upload-image"
-            type="file" 
-            accept="image/*, .heic" 
-            capture="camera"
-          />
-        <br/>
-          <input 
-            type="checkbox" 
-            id="current-position" 
-            name="current-position" 
-            checked={optIn}
-            onChange={getCurrentPosition} />
-          <label htmlFor="current-position">use my current location</label>
-        <br/>
-          <label htmlFor="address">address</label>
-          <input 
-            id="address" 
-            name="address" 
-            type="text"
-            value={address}
-            onChange={(e) => {
-              setAddress(e.target.value)
-              setMinCharTyped(e.target.value.length >= 4)}}
-              disabled={optIn}
-              />
-        <br/>
-          <ul>
-            {suggestions.map( (location, index) => (
-              <li key={index} onClick={() => handleSuggestionClick(location)}>
-                {location.name}
-              </li>
-            ) )}
-          </ul>
-          <label htmlFor="comment">comment</label>
-          <input type="text" name="comment"/>
-        <br/>
-          <input type="submit" value="add a pin"/>
-      </form>
+        <div className="form-container">
+            <form onSubmit={handleFormSubmit}>
+            <h2>Add a Pin</h2>
+            <label htmlFor="upload-image">Upload an image</label>
+            <input 
+                id="upload-image" 
+                name="upload-image"
+                type="file" 
+                accept="image/*, .heic" 
+                capture="camera"
+            />
+            <br/>
+            <input 
+                type="checkbox" 
+                id="current-position" 
+                name="current-position" 
+                checked={optIn}
+                onChange={getCurrentPosition}></input>
+            <label htmlFor="current-position">Use my current location</label>
+            <br/>
+            <label htmlFor="address">Address</label>
+            <input 
+                id="address" 
+                name="address" 
+                type="text"
+                value={address}
+                onChange={(e) => {
+                setAddress(e.target.value)
+                setMinCharTyped(e.target.value.length >= 7)}}
+                disabled={optIn}
+                />
+            <br/>
+            <ul>
+                {suggestions.map( (location, index) => (
+                <li key={index} onClick={() => handleSuggestionClick(location)}>
+                    {location.name}
+                </li>
+                ) )}
+            </ul>
+            <label htmlFor="comment">Comment</label>
+            <input type="text" name="comment"/>
+            <br/>
+            <input type="submit" value="ADD A PIN"/>
+        </form>
+      </div>
     )
 }
