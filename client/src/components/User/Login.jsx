@@ -27,19 +27,21 @@ export default function Login() {
 
                 <h2>Log In</h2>
                 
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Username<span>*</span></label>
 
                 <input id="username"
                 type="text"
                 onChange={handleChangeUsername}
                 value={username}
+                required
                 />
 
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Password<span>*</span></label>
                 <input id="password"
                 type="text"
                 onChange={handleChangePassword}
                 value={password}
+                required
                 />
 
                 <input type="submit"

@@ -55,19 +55,21 @@ export default function Signup() {
                 value={address}
                 />
 
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Username<span>*</span></label>
                 <input id="username" 
                 type="text"
                 onChange={handleChangeUsername}
                 value={username}
+                required
                 />
 
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Password<span>*</span></label>
                 <input id="password"
                 // turns the field input into asterisks
                 type="password"
                 onChange={handleChangePassword}
                 value={password}
+                required
                 />
 
                 <input type="submit"
