@@ -60,7 +60,7 @@ export default function MyPinsCard({pinObj, edit=true}) {
                 <p> - {pinObj.user?.username}</p>
                 {
                 (edit === true) ? ( <>
-                    <button>edit</button>
+                    {/* <button>edit</button> */}
                     <button onClick={() => destroyPinAndDeletePinData(pinObj.id)}>delete</button>
                     </>) : null
                 }

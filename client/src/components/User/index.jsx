@@ -33,8 +33,8 @@ export default function UserPanel() {
                     <p>password: ********</p>
                     <p>address: {currentUser.address}</p>
 
-                    <button onClick={handleEdit}>Edit Settings</button>
-                    <br></br>
+                    {/* <button onClick={handleEdit}>Edit Settings</button>
+                    <br></br> */}
                     <button onClick={logout}>Logout</button>
                 </div>
                 <MyPinsList/>
