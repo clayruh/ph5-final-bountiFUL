@@ -58,7 +58,8 @@ export default function MyPinsCard({pinObj, edit=true}) {
                 <p>{address || `${pinObj.latitude}, ${pinObj.longitude}`}</p>
                 <p>{pinObj.comment}</p>
                 <p> - {pinObj.user?.username}</p>
-                {(edit === true) ? ( <>
+                {
+                (edit === true) ? ( <>
                     <button>edit</button>
                     <button onClick={() => destroyPinAndDeletePinData(pinObj.id)}>delete</button>
                     </>) : null

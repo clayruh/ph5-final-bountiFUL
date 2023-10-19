@@ -53,11 +53,11 @@ form{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  height: 73vh;
   border: 1px solid black;
   border-radius: 10px;
-  width: 50%;
-  margin: 20px;
+  width: 35%;
+  margin: 30px;
   padding: 0px 100px;
 }
 
@@ -123,7 +123,7 @@ input[type=submit]{
 }
 
 form textarea {
-  width: 450px;
+  width: 100%;
   font-family: 'Zilla Slab', serif;
 }
 .comment-input {
@@ -134,20 +134,20 @@ form textarea {
 .lds-ring {
   display: inline-block;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
 }
 .lds-ring div {
   box-sizing: border-box;
   display: block;
   position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 8px solid #fff;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  border: 4px solid #E64A07;
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+  border-color: #E64A07 transparent transparent transparent;
 }
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
@@ -168,37 +168,6 @@ form textarea {
 }
 /* END LOADING SPINNER */
 /* END FORM STYLING */
-
-/* FOR MOBILE VERSION */
-@media screen and (max-width: 768px) {
-  form{
-    width: 100%;
-    height: 75vh;
-    padding: 0px 35px;
-  }
-
-  form input{
-    width: 100%;
-  }
-
-  form input[type=submit]{
-    width: 100%;
-  }
-
-  form textarea {
-    width: 100%;
-  }
-
-  .recent-pins h2 {
-    text-align: center;
-  }
-
-  .pin-card-list {
-    justify-content: center;
-  }
-
-}
-/* END FOR MOBILE VERSION */
 
 /* MAPBOX POPUP CONTENT */
 .mapbox-popup {
@@ -310,7 +279,6 @@ form textarea {
   border-radius: 5px;
 }
 
-
 .pin-card-text {
   margin-left: 20px;
 }
@@ -318,12 +286,23 @@ form textarea {
 .pin-card-text h4 {
   margin: 10px 0px;
 }
+
+.recent-pins h2 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.recent-pins-p {
+  margin: 10px 0px;
+}
+
 /* END USER PINS */
 
 /* FOOTER */
 footer {
   background-color: #F6F3CB;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 0px 20px;
 }
@@ -334,3 +313,62 @@ footer img {
 }
 /* END FOOTER */
 
+/* FOR MOBILE VERSION */
+@media screen and (max-width: 768px) {
+
+  h1 {
+    margin: 5px 0px; 
+    font-size: 35px;
+  }
+
+  form{
+    width: 100%;
+    height: 64vh;
+    padding: 20px 35px;
+  }
+
+  .checkbox-container {
+    margin-bottom: 20px;
+  }
+
+  form input{
+    width: 100%;
+  }
+
+  form input[type=submit]{
+    width: 100%;
+  }
+
+  form textarea {
+    width: 100%;
+  }
+
+  .recent-pins h2 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  .recent-pins-p {
+    text-align: center;
+    margin: 10px 0px;
+  }
+
+  .pin-card-list {
+    justify-content: center;
+  }
+
+  footer {
+    height: 70px;
+  }
+
+  footer h1 {
+    font-size: 30px;
+  }
+
+  footer img {
+    width: 25px;
+  }
+
+}
+/* END FOR MOBILE VERSION */

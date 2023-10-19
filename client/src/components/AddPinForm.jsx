@@ -177,8 +177,12 @@ export default function AddPinForm() {
             </ul>
             <label htmlFor="comment">Comment</label>
             <textarea type="text" name="comment" className="comment-input"/>
-            <input type="submit" value="ADD A PIN" disabled={geolocationLoading}></input>
-            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+            {
+                (geolocationLoading) ?
+                <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                :
+                <input type="submit" value="ADD A PIN"></input>
+            }   
         </form>
       </div>
     )
