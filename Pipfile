@@ -17,8 +17,8 @@ pillow = "*"
 flask-bcrypt = "*"
 requests = "*"
 python-dotenv = "*"
-piexif = "*"
-exif = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_full_version = "3.8.13"
