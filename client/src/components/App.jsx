@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 // COMPONENTS //
 import Header from './Header'
+import Footer from './Footer'
 
 const POST_HEADERS = {
   'Content-Type': 'application/json',
@@ -100,7 +101,7 @@ export default function App() {
         logout={logout}
       /> */}
       {/* Change this to a footer. */}
-      <Header/>
+      <Footer/>
     </div>
   )
 }

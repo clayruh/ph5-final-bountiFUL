@@ -318,5 +318,19 @@ form textarea {
 .pin-card-text h4 {
   margin: 10px 0px;
 }
-
 /* END USER PINS */
+
+/* FOOTER */
+footer {
+  background-color: #F6F3CB;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 20px;
+}
+
+footer img {
+  width: 35px;
+  margin: 40px 5px;
+}
+/* END FOOTER */
+
