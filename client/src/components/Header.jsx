@@ -5,7 +5,7 @@ export default function Header() {
 
     return (
         <header className='main-header'>
-            <h1>🌿 bountiFUL 🌿</h1>
+            <a href="/"><h1>🌿 bountiFUL 🌿</h1></a>
             <nav className='nav-bar'>
                 <Link className="link" to='/'>Map</Link>
                 <Link className="link" to='/add-a-pin'>Add A Pin</Link>

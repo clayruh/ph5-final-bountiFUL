@@ -6,9 +6,9 @@ const URL = "/api/v1"
 export default function AddPinForm() {
 
     const navigate = useNavigate()
-
     const {currentUser} = useOutletContext()
 
+    const [geolocationLoading, setGeolocationLoading] = useState(false)
     const [address, setAddress] = useState('')
     const [minCharTyped, setMinCharTyped] = useState(false)
     const [suggestions, setSuggestions] = useState([])
@@ -18,23 +18,26 @@ export default function AddPinForm() {
     const [selectedSuggestion, setSelectedSuggestion] = useState(null)
     
     // USER'S CURRENT GEOLOCATION //
-    const successCallback = position => {
-        console.log(position)
-        const lng = position.coords.longitude
-        const lat = position.coords.latitude
-        const latlng = {lat,lng}
-        setLatLng(latlng)
-    }
-
-    const errorCallback = (error) => {
-        setOptIn(false)
-        alert('Unable to retrieve your location. Either turn on location services or add in an address')
-    }
-
-    function getCurrentPosition() {
+    async function getCurrentPosition() {
         if (navigator.geolocation) {
-        setOptIn(true)
-        navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
+            setOptIn(true)
+            setGeolocationLoading(true)
+
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject)
+                })
+                setGeolocationLoading(false)
+                const lng = position.coords.longitude
+                const lat = position.coords.latitude
+                const latlng = {lat,lng}
+                setLatLng(latlng)
+                console.log(position)
+            } catch (error) {
+                setGeolocationLoading(false)
+                setOptIn(false)
+                alert('Unable to retrieve your location. Either turn on location services or add in an address')
+            }
         } else {
         setOptIn(false)
         alert('Sorry your browser does not support geolocation, please add in an address')
@@ -141,14 +144,18 @@ export default function AddPinForm() {
                 capture="camera"
                 required
             />
-            <label htmlFor="current-position"><input 
+            <div className="checkbox-container">
+            <input 
                 type="checkbox" 
                 id="current-position" 
                 name="current-position" 
                 checked={optIn}
                 onChange={getCurrentPosition}></input>
-                Use my current location 
+            <label htmlFor="current-position">
+                Use my current location
             </label>
+            </div>
+            
             <label htmlFor="address">Address</label>
             <input 
                 id="address" 
@@ -170,7 +177,8 @@ export default function AddPinForm() {
             </ul>
             <label htmlFor="comment">Comment</label>
             <textarea type="text" name="comment" className="comment-input"/>
-            <input type="submit" value="ADD A PIN"/>
+            <input type="submit" value="ADD A PIN" disabled={geolocationLoading}></input>
+            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
         </form>
       </div>
     )

@@ -99,7 +99,8 @@ export default function App() {
         attemptSignup={attemptSignup}
         logout={logout}
       /> */}
-      
+      {/* Change this to a footer. */}
+      <Header/>
     </div>
   )
 }

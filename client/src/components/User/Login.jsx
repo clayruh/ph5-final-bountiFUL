@@ -38,7 +38,7 @@ export default function Login() {
 
                 <label htmlFor="password">Password<span>*</span></label>
                 <input id="password"
-                type="text"
+                type="password"
                 onChange={handleChangePassword}
                 value={password}
                 required
