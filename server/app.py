@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # Remote library imports
-from dotenv import load_dotenv
-load_dotenv()
-from flask import Flask, request, jsonify, session, render_template
+from flask import Flask, request, jsonify, session
 from flask_bcrypt import Bcrypt
 import requests
 import base64
@@ -27,11 +25,6 @@ def current_user():
 
 def check_admin():
     return current_user() and current_user().admin
-
-@app.route('/')
-@app.route('/<int:id>')
-def index(id=0):
-    return render_template("index.html")
 
 # ============ USER SIGNUP ============ #
 

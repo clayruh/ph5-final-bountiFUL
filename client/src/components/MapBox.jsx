@@ -83,7 +83,7 @@ export default function MapBox() {
     if (selectedPin) {
       map.current.flyTo({
         center: [selectedPin.longitude, selectedPin.latitude],
-        // zoom: 11,
+        // zoom: 9,
         duration: 500,
       });
     }
