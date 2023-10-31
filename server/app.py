@@ -3,6 +3,7 @@
 from flask import Flask, request, jsonify, session
 from flask_bcrypt import Bcrypt
 import requests
+# import for encoding image to send to plant.id API
 import base64
 
 # Local imports
@@ -269,13 +270,5 @@ def get_plants_by_id(id):
 def edit_plant(id):
     pass
 
-@app.delete(URL + '/plants/<int:id>')
-def delete_plant(id):
-    pass
-
-# ====================== GOOGLE MAPS API ====================== #
-
-
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
-
