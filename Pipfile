@@ -14,11 +14,11 @@ flask-cors = "*"
 faker = "*"
 sqlalchemy = "*"
 pillow = "*"
-flask-bcrypt = "*"
 requests = "*"
 python-dotenv = "*"
 piexif = "*"
 exif = "*"
+flask-bcrypt = "*"
 
 [requires]
 python_full_version = "3.8.13"
