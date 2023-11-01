@@ -1,4 +1,4 @@
-# Phase 5 Final Project: WildHarvest
+# Phase 5 Final Project: bountiFUL
 
 ## About
 A mobile-first React site for foraging enthusiasts to see and track all different kinds of fruits, herbs, mushrooms, and the like.
