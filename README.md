@@ -19,5 +19,7 @@ A mobile-first React site for foraging enthusiasts to see and track all differen
 ### Technology
 * JavaScript
 * React
+* Python
+* Flask
 * MapBox API
 * Plant.id API
