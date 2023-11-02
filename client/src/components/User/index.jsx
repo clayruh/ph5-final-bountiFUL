@@ -8,12 +8,12 @@ import {useState} from 'react'
 export default function UserPanel() {
 
     const {currentUser, attemptLogin, attemptSignup, logout} = useOutletContext()
-    const [editForm, setEditForm] = useState(false)
+    // const [editForm, setEditForm] = useState(false)
     
 
-    function handleEdit() {
-        setEditForm(!editForm)
-    }
+    // function handleEdit() {
+    //     setEditForm(!editForm)
+    // }
 
     if (!currentUser) {
         return (

@@ -30,6 +30,7 @@ def current_user():
 def check_admin():
     return current_user() and current_user().admin
 
+# added this route for deployment so that render knows to server index.html as the root route for the site
 @app.route('/')
 @app.route('/<int:id>')
 def index(id=0):

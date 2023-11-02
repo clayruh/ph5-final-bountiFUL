@@ -16,9 +16,9 @@ export default function MapBox() {
   const [pins, setPins] = useState([])
 
   // HANDLE BOOKMARKS //
-  function handleBookmark() {
-    console.log("bookmarked!")
-  }
+  // function handleBookmark() {
+  //   console.log("bookmarked!")
+  // }
 
   useEffect(() => {
     fetch( URL + '/pins')
@@ -47,7 +47,7 @@ export default function MapBox() {
           // map.current.addControl(directions, 'top-left');
         }
 
-        allData.forEach((pinObj) => {
+        pins.forEach((pinObj) => {
           const marker = new mapboxgl.Marker()
             .setLngLat([pinObj.longitude, pinObj.latitude])
             .setPopup(

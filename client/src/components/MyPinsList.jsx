@@ -21,7 +21,8 @@ export default function MyPinsList() {
             .then((data) => {
                 setPins(data);
             })
-    }, [])
+    // render asking to add 'currentUser.id' as a dependency
+    }, [currentUser.id])
 
     const mapPins = pins.map((pinObj) => (
         <MyPinsCard key={pinObj.id} pinObj={pinObj}/>

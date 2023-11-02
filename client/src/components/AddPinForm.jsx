@@ -120,7 +120,8 @@ export default function AddPinForm() {
         geocode()
         }
         // don't need the address state because we're just going to depend on minCharTyped as the dependency
-    }, [minCharTyped] )
+        // render deployment says I have to add address as a dependency
+    }, [minCharTyped, address] )
 
     function handleSuggestionClick(selectedLocation) {
         // resetting suggestions to empty, and address to the selected location
