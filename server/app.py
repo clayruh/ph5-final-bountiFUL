@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Remote library imports
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, render_template
 from flask_bcrypt import Bcrypt
 import requests
 # import for encoding image to send to plant.id API
@@ -10,6 +10,8 @@ import base64
 from config import app, db
 from models import User, Plant, Pin
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 PLANT_ID_API_KEY=os.environ.get('PLANT_ID_API_KEY')
 
@@ -17,6 +19,7 @@ app.secret_key = b'u\xd2\xdc\xe82\xa3\xc0\xca\xe7H\xd03oi\xd1\x95\xcc\x7f'
 
 bcrypt = Bcrypt(app)
 
+# to keep track API versions, maybe keep old versions as legacy
 URL = '/api/v1'
 
 # HELPER METHODS #
@@ -26,6 +29,11 @@ def current_user():
 
 def check_admin():
     return current_user() and current_user().admin
+
+@app.route('/')
+@app.route('/<int:id>')
+def index(id=0):
+    return render_template("index.html")
 
 # ============ USER SIGNUP ============ #
 
