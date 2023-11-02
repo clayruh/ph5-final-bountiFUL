@@ -76,7 +76,8 @@ export default function MapBox() {
           });
         });
       });
-  }, []);
+      // render asking to add pins as a dependency for deployment
+  }, [pins]);
 
   // Zoom to the selected pin
   useEffect(() => {
